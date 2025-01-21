@@ -1,11 +1,22 @@
 <form>
     <div>
-      <label for="username">Nom d'usuari</label>
-      <input id="username" type="text" placeholder="Nom d'usuari" />
+      <label for="username">Username</label>
+      <input
+        id="username"
+        type="text"
+        [(ngModel)]="username"
+        placeholder="Enter your username"
+      />
     </div>
     <div>
-      <label for="password">Contrasenya</label>
-      <input id="password" type="password" placeholder="Contrasenya" />
+      <label for="password">Password</label>
+      <input
+        id="password"
+        type="password"
+        [(ngModel)]="password"
+        placeholder="Enter your password"
+      />
     </div>
-    <button type="submit">Inicia sessió</button>
-</form>  
+    <button type="submit" [disabled]="!isFormValid">Log In</button>
+  </form>
+  
