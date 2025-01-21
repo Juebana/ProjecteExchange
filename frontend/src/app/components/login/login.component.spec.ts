@@ -21,7 +21,7 @@ describe('LoginComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('debería mostrar los inputs para username y password, y el botón de envío', () => {
+  it('it should show the inputs and the send button', () => {
     const compiled = fixture.nativeElement as HTMLElement;
 
     const usernameInput = compiled.querySelector('input#username');
