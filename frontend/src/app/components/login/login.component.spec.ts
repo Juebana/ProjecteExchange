@@ -55,4 +55,25 @@ describe('LoginComponent', () => {
 
     expect(submitButton.disabled).toBeFalse();
   });
+
+  it('should call the login method with username and password when the form is submitted', () => {
+    const compiled = fixture.nativeElement as HTMLElement;
+    const usernameInput = compiled.querySelector('input#username') as HTMLInputElement;
+    const passwordInput = compiled.querySelector('input#password') as HTMLInputElement;
+    const form = compiled.querySelector('form') as HTMLFormElement;
+  
+    spyOn(component, 'login');
+
+    usernameInput.value = 'testuser';
+    usernameInput.dispatchEvent(new Event('input'));
+    passwordInput.value = 'password123';
+    passwordInput.dispatchEvent(new Event('input'));
+    fixture.detectChanges();
+
+    form.dispatchEvent(new Event('submit'));
+    fixture.detectChanges();
+
+    expect(component.login).toHaveBeenCalledWith('testuser', 'password123');
+  });
+  
 });
