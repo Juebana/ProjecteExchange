@@ -15,4 +15,9 @@ export class LoginComponent {
   get isFormValid(): boolean {
     return this.username.trim() !== '' && this.password.trim() !== '';
   }
+
+  login(username: string, password: string): void {
+    console.log('Logging in with', username, password);
+    // Placeholder: This will be implemented to handle the backend call.
+  }
 }

@@ -31,7 +31,7 @@ describe('LoginComponent', () => {
     expect(usernameInput).toBeTruthy();
     expect(passwordInput).toBeTruthy();
     expect(submitButton).toBeTruthy();
-    expect(submitButton?.textContent?.toLowerCase()).toContain('inicia sessió');
+    expect(submitButton?.textContent).toContain('Log In');
   });
 
   it('should disable the submit button if username or password is empty', () => {
