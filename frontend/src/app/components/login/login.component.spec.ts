@@ -33,4 +33,26 @@ describe('LoginComponent', () => {
     expect(submitButton).toBeTruthy();
     expect(submitButton?.textContent?.toLowerCase()).toContain('inicia sessió');
   });
+
+  it('should disable the submit button if username or password is empty', () => {
+    const compiled = fixture.nativeElement as HTMLElement;
+
+    const usernameInput = compiled.querySelector('input#username') as HTMLInputElement;
+    const passwordInput = compiled.querySelector('input#password') as HTMLInputElement;
+    const submitButton = compiled.querySelector('button[type="submit"]') as HTMLButtonElement;
+
+    expect(submitButton.disabled).toBeTrue();
+
+    usernameInput.value = 'testuser';
+    usernameInput.dispatchEvent(new Event('input'));
+    fixture.detectChanges();
+
+    expect(submitButton.disabled).toBeTrue();
+
+    passwordInput.value = 'password123';
+    passwordInput.dispatchEvent(new Event('input'));
+    fixture.detectChanges();
+
+    expect(submitButton.disabled).toBeFalse();
+  });
 });
