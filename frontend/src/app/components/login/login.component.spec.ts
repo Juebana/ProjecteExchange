@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
-import { LoginComponent } from './login.component';
+import { LoginComponent } from '../login/login.component';
+import { AuthService } from '../../services/AuthService/auth.service';
 
 describe('LoginComponent', () => {
   let component: LoginComponent;
@@ -8,10 +9,18 @@ describe('LoginComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [LoginComponent, FormsModule],
-    })
-    .compileComponents();
-
+      imports: [FormsModule],
+      declarations: [LoginComponent],
+      providers: [
+        {
+          provide: AuthService,
+          useValue: {
+            login: jasmine.createSpy('login').and.returnValue(of({ token: 'test-token' })),
+          },
+        },
+      ],
+    }).compileComponents();
+  
     fixture = TestBed.createComponent(LoginComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
@@ -90,3 +99,7 @@ describe('LoginComponent', () => {
   });
   
 });
+function of(arg0: { token: string; }): any {
+  throw new Error('Function not implemented.');
+}
+

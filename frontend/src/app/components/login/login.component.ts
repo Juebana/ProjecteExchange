@@ -9,7 +9,7 @@ import { FormsModule } from '@angular/forms';
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css'],
 })
-export class SdALoginComponent {
+export class LoginComponent {
   username: string = '';
   password: string = '';
 
