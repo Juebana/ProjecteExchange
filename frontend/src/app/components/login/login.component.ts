@@ -9,9 +9,11 @@ import { FormsModule } from '@angular/forms';
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css'],
 })
+
 export class LoginComponent {
   username: string = '';
   password: string = '';
+  token: string | null = null;
 
   constructor(private authService: AuthService) {}
 
@@ -30,4 +32,22 @@ export class LoginComponent {
       },
     });
   }
+
+  async onSubmit(): Promise<void> {
+    if (this.username && this.password) {
+      try {
+        this.authService.login(this.username, this.password).subscribe({
+          next: (response) => {
+            this.token = response.token; // Store the token
+          },
+          error: (error) => {
+            console.error('Login failed:', error); // Handle login failure
+          },
+        });
+      } catch {
+        console.warn('Username or password is missing.');
+      }
+    }
+  }
+  
 }

@@ -3,26 +3,28 @@ import { FormsModule } from '@angular/forms';
 import { LoginComponent } from '../login/login.component';
 import { AuthService } from '../../services/AuthService/auth.service';
 import { of } from 'rxjs';
+import { provideHttpClient } from '@angular/common/http';
 
 describe('LoginComponent', () => {
   let component: LoginComponent;
   let fixture: ComponentFixture<LoginComponent>;
+  let authService: jasmine.SpyObj<AuthService>;
 
   beforeEach(async () => {
-    const authServiceMock = {
-      login: jasmine.createSpy('login').and.returnValue(of({ token: 'test-token' })),
-    };
-  
+    const authServiceMock = jasmine.createSpyObj('AuthService', ['login']);
+    authServiceMock.login.and.returnValue(of({ token: 'test-token' }));
+
     await TestBed.configureTestingModule({
-      imports: [FormsModule], 
-      declarations: [LoginComponent],
+      imports: [FormsModule, LoginComponent],
       providers: [
-        AuthService
+        { provide: AuthService, useValue: authServiceMock }, 
+        provideHttpClient(),
       ],
     }).compileComponents();
-  
+
     fixture = TestBed.createComponent(LoginComponent);
     component = fixture.componentInstance;
+    authService = TestBed.inject(AuthService) as jasmine.SpyObj<AuthService>;
     fixture.detectChanges();
   });
 
@@ -30,7 +32,7 @@ describe('LoginComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('it should show the inputs and the send button', () => {
+  it('should show the inputs and the send button', () => {
     const compiled = fixture.nativeElement as HTMLElement;
 
     const usernameInput = compiled.querySelector('input#username');
@@ -65,25 +67,19 @@ describe('LoginComponent', () => {
     expect(submitButton.disabled).toBeFalse();
   });
 
-  it('should call AuthService.login with the correct credentials', async () => {
-    // Set test data for the form
+  it('should call AuthService.login with the correct credentials', () => {
     component.username = 'testuser';
-    component.password = 'password123';
+    component.password = 'testpassword';
 
-    // Trigger login
-    await component.onSubmit();
+    component.onSubmit();
 
-    // Verify `login` was called with the correct parameters
-    const authService = TestBed.inject(AuthService);
-    expect(authService.login).toHaveBeenCalledWith('testuser', 'password123');
+    expect(authService.login).toHaveBeenCalledWith('testuser', 'testpassword');
   });
 
   it('should set token on successful login', async () => {
-    // Trigger login
+
     await component.onSubmit();
 
-    // Verify the token was set
-    expect(component.token).toEqual('mock-token');
+    expect(component.token).toEqual('test-token');
   });
-  
 });
