@@ -2,22 +2,22 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { LoginComponent } from '../login/login.component';
 import { AuthService } from '../../services/AuthService/auth.service';
+import { of } from 'rxjs';
 
 describe('LoginComponent', () => {
   let component: LoginComponent;
   let fixture: ComponentFixture<LoginComponent>;
 
   beforeEach(async () => {
+    const authServiceMock = {
+      login: jasmine.createSpy('login').and.returnValue(of({ token: 'test-token' })),
+    };
+  
     await TestBed.configureTestingModule({
-      imports: [FormsModule],
+      imports: [FormsModule], 
       declarations: [LoginComponent],
       providers: [
-        {
-          provide: AuthService,
-          useValue: {
-            login: jasmine.createSpy('login').and.returnValue(of({ token: 'test-token' })),
-          },
-        },
+        AuthService
       ],
     }).compileComponents();
   
@@ -65,41 +65,25 @@ describe('LoginComponent', () => {
     expect(submitButton.disabled).toBeFalse();
   });
 
-  it('should call the login method with username and password when the form is submitted', () => {
-    const compiled = fixture.nativeElement as HTMLElement;
-    const usernameInput = compiled.querySelector('input#username') as HTMLInputElement;
-    const passwordInput = compiled.querySelector('input#password') as HTMLInputElement;
-    const form = compiled.querySelector('form') as HTMLFormElement;
-  
-    spyOn(component, 'login');
-
-    usernameInput.value = 'testuser';
-    usernameInput.dispatchEvent(new Event('input'));
-    passwordInput.value = 'password123';
-
-    passwordInput.dispatchEvent(new Event('input'));
-    fixture.detectChanges();
-
-    form.dispatchEvent(new Event('submit'));
-    fixture.detectChanges();
-
-    expect(component.login).toHaveBeenCalledWith('testuser', 'password123');
-  });
-  
-  it('should call the AuthService with the correct username and password on login', () => {
-    const authService = TestBed.inject(AuthService);
-    spyOn(authService, 'login').and.returnValue(of({ token: 'test-token' }));
-
+  it('should call AuthService.login with the correct credentials', async () => {
+    // Set test data for the form
     component.username = 'testuser';
     component.password = 'password123';
 
-    component.login(component.username, component.password);
+    // Trigger login
+    await component.onSubmit();
 
+    // Verify `login` was called with the correct parameters
+    const authService = TestBed.inject(AuthService);
     expect(authService.login).toHaveBeenCalledWith('testuser', 'password123');
+  });
+
+  it('should set token on successful login', async () => {
+    // Trigger login
+    await component.onSubmit();
+
+    // Verify the token was set
+    expect(component.token).toEqual('mock-token');
   });
   
 });
-function of(arg0: { token: string; }): any {
-  throw new Error('Function not implemented.');
-}
-
