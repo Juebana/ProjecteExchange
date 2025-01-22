@@ -67,6 +67,7 @@ describe('LoginComponent', () => {
     usernameInput.value = 'testuser';
     usernameInput.dispatchEvent(new Event('input'));
     passwordInput.value = 'password123';
+
     passwordInput.dispatchEvent(new Event('input'));
     fixture.detectChanges();
 
@@ -74,6 +75,18 @@ describe('LoginComponent', () => {
     fixture.detectChanges();
 
     expect(component.login).toHaveBeenCalledWith('testuser', 'password123');
+  });
+  
+  it('should call the AuthService with the correct username and password on login', () => {
+    const authService = TestBed.inject(AuthService);
+    spyOn(authService, 'login').and.returnValue(of({ token: 'test-token' }));
+
+    component.username = 'testuser';
+    component.password = 'password123';
+
+    component.login(component.username, component.password);
+
+    expect(authService.login).toHaveBeenCalledWith('testuser', 'password123');
   });
   
 });
