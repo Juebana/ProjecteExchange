@@ -36,18 +36,14 @@ export class LoginComponent {
   async onSubmit(): Promise<void> {
     if (this.username && this.password) {
       try {
-        this.authService.login(this.username, this.password).subscribe({
-          next: (response) => {
-            this.token = response.token; // Store the token
-          },
-          error: (error) => {
-            console.error('Login failed:', error); // Handle login failure
-          },
-        });
-      } catch {
-        console.warn('Username or password is missing.');
+        const response = await this.authService.login(this.username, this.password).toPromise();
+        this.token = response.token;
+      } catch (error) {
+        console.error('Login failed:', error);
       }
+    } else {
+      console.warn('Username or password is missing.');
     }
-  }
+  }  
   
 }

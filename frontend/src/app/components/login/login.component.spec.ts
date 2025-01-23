@@ -77,9 +77,13 @@ describe('LoginComponent', () => {
   });
 
   it('should set token on successful login', async () => {
-
+    component.username = 'testuser';
+    component.password = 'testpassword';
+  
     await component.onSubmit();
-
-    expect(component.token).toEqual('test-token');
+    fixture.detectChanges(); 
+    
+    expect(component.token).toEqual('test-token'); 
   });
+  
 });
