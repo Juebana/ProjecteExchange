@@ -1,24 +1,38 @@
-<form (submit)="login(username, password); $event.preventDefault()">
-    <div>
-      <label for="username">Username</label>
-      <input
-        id="username"
-        type="text"
-        [(ngModel)]="username"
-        [ngModelOptions]="{ standalone: true }"
-        placeholder="Enter your username"
-      />
-    </div>
-    <div>
-      <label for="password">Password</label>
-      <input
-        id="password"
-        type="password"
-        [(ngModel)]="password"
-        [ngModelOptions]="{ standalone: true }"
-        placeholder="Enter your password"
-      />
-    </div>
-    <button type="submit" [disabled]="!isFormValid">Log In</button>
-  </form>
-  
+<div class="toggle-container">
+  <span class="login-text">Log In</span>
+  <label class="toggle-switch">
+    <input
+      type="checkbox"
+      [(ngModel)]="isRegistration"
+      [ngModelOptions]="{ standalone: true }"
+    />
+    <span class="slider"></span>
+  </label>
+  <span class="register-text">Register</span>
+</div>
+
+<form (submit)="onSubmit(); $event.preventDefault()">
+  <div>
+    <label for="username">Username</label>
+    <input
+      id="username"
+      type="text"
+      [(ngModel)]="username"
+      [ngModelOptions]="{ standalone: true }"
+      placeholder="Enter your username"
+    />
+  </div>
+  <div>
+    <label for="password">Password</label>
+    <input
+      id="password"
+      type="password"
+      [(ngModel)]="password"
+      [ngModelOptions]="{ standalone: true }"
+      placeholder="Enter your password"
+    />
+  </div>
+  <button type="submit" [disabled]="!isFormValid">
+    {{ isRegistration ? 'Register' : 'Log In' }}
+  </button>
+</form>

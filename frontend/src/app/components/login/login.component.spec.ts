@@ -86,16 +86,21 @@ describe('LoginComponent', () => {
     expect(component.token).toEqual('test-token'); 
   });
   
-  it('should display a toggle switch to switch between Login and Register', () => {
+  it('should display a toggle switch and allow switching between Login and Register', () => {
     const compiled = fixture.nativeElement as HTMLElement;
   
-    const toggleSwitch = compiled.querySelector('.toggle-switch');
+    const toggleSwitch = compiled.querySelector('.toggle-switch input');
     const loginText = compiled.querySelector('.login-text');
     const registerText = compiled.querySelector('.register-text');
   
     expect(toggleSwitch).toBeTruthy();
     expect(loginText?.textContent).toContain('Log In');
     expect(registerText?.textContent).toContain('Register');
+
+    toggleSwitch?.dispatchEvent(new Event('click'));
+    fixture.detectChanges();
+  
+    expect(component.isRegistration).toBeTrue();
   });
   
 });

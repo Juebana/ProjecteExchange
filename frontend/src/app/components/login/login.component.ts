@@ -14,6 +14,7 @@ export class LoginComponent {
   username: string = '';
   password: string = '';
   token: string | null = null;
+  isRegistration: boolean = false;
 
   constructor(private authService: AuthService) {}
 
@@ -25,6 +26,7 @@ export class LoginComponent {
     this.authService.login(username, password).subscribe({
       next: (response) => {
         console.log('Login successful:', response);
+        this.token = response.token;
         // Handle token storage or redirection here
       },
       error: (err) => {
@@ -33,17 +35,21 @@ export class LoginComponent {
     });
   }
 
+  register(username: string, password: string): void {
+    console.log('Registration logic executed:', { username, password });
+    // Add your registration API call here
+  }
+
   async onSubmit(): Promise<void> {
-    if (this.username && this.password) {
-      try {
-        const response = await this.authService.login(this.username, this.password).toPromise();
-        this.token = response.token;
-      } catch (error) {
-        console.error('Login failed:', error);
+    if (this.isFormValid) {
+      if (this.isRegistration) {
+        this.register(this.username, this.password);
+      } else {
+        this.login(this.username, this.password);
       }
     } else {
       console.warn('Username or password is missing.');
     }
-  }  
-  
+  }
 }
+
