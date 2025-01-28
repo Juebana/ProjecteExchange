@@ -9,7 +9,6 @@ import { FormsModule } from '@angular/forms';
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css'],
 })
-
 export class LoginComponent {
   username: string = '';
   password: string = '';
@@ -27,17 +26,29 @@ export class LoginComponent {
       next: (response) => {
         console.log('Login successful:', response);
         this.token = response.token;
-        // Handle token storage or redirection here
+        localStorage.setItem('token', this.token!); 
+        alert('Login successful!');
+        // Optionally, redirect the user or perform other actions
       },
       error: (err) => {
         console.error('Login failed:', err);
+        alert('Login failed. Please check your credentials.');
       },
     });
   }
 
   register(username: string, password: string): void {
-    console.log('Registration logic executed:', { username, password });
-    // Add your registration API call here
+    this.authService.register(username, password).subscribe({
+      next: () => {
+        console.log('Registration successful.');
+        alert('Registration successful! You can now log in.');
+        this.isRegistration = false;
+      },
+      error: (err) => {
+        console.error('Registration failed:', err);
+        alert('Registration failed. Please try again.');
+      },
+    });
   }
 
   async onSubmit(): Promise<void> {
@@ -49,7 +60,7 @@ export class LoginComponent {
       }
     } else {
       console.warn('Username or password is missing.');
+      alert('Please fill in both username and password.');
     }
   }
 }
-
