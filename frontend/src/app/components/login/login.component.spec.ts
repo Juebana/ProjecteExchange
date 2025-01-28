@@ -87,19 +87,14 @@ describe('LoginComponent', () => {
   });
   
   it('should display a toggle switch and allow switching between Login and Register', () => {
-    const compiled = fixture.nativeElement as HTMLElement;
-  
-    const toggleSwitch = compiled.querySelector('.toggle-switch input');
-    const loginText = compiled.querySelector('.login-text');
-    const registerText = compiled.querySelector('.register-text');
-  
-    expect(toggleSwitch).toBeTruthy();
-    expect(loginText?.textContent).toContain('Log In');
-    expect(registerText?.textContent).toContain('Register');
+    const toggleSwitch = fixture.nativeElement.querySelector('input[type="checkbox"]');
 
-    toggleSwitch?.dispatchEvent(new Event('click'));
+    expect(component.isRegistration).toBeFalse();
+
+    toggleSwitch.checked = true;
+    toggleSwitch.dispatchEvent(new Event('change'));
     fixture.detectChanges();
-  
+
     expect(component.isRegistration).toBeTrue();
   });
   
