@@ -11,7 +11,7 @@
   <span class="register-text">Register</span>
 </div>
 
-<form (submit)="onSubmit(); $event.preventDefault()">
+<form (ngSubmit)="onSubmit()">
   <div>
     <label for="username">Username</label>
     <input

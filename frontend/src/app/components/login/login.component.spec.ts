@@ -80,7 +80,7 @@ describe('LoginComponent', () => {
     component.username = 'testuser';
     component.password = 'testpassword';
   
-    await component.onSubmit();
+    component.onSubmit();
     fixture.detectChanges(); 
     
     expect(component.token).toEqual('test-token'); 
