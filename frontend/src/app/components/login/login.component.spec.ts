@@ -17,7 +17,7 @@ describe('LoginComponent', () => {
     await TestBed.configureTestingModule({
       imports: [FormsModule, LoginComponent],
       providers: [
-        { provide: AuthService, useValue: authServiceMock }, 
+        { provide: AuthService, useValue: authServiceMock, login: () => of({ token: 'test-token' }) }, 
         provideHttpClient(),
       ],
     }).compileComponents();

@@ -24,6 +24,7 @@
     login(username: string, password: string): void {
       this.authService.login(username, password).subscribe({
         next: (response) => {
+          this.token = response.token;
           alert('Login successful!');
           // Optionally, redirect the user or perform other actions
         },
