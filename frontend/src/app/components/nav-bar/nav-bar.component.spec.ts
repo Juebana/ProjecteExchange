@@ -29,10 +29,10 @@ describe('NavBarComponent', () => {
 
   it('should call logout() when logout button is clicked', () => {
     spyOn(component, 'logout'); 
-  
+    fixture.detectChanges();
     const compiled = fixture.nativeElement as HTMLElement;
-    const logoutButton = compiled.querySelector('button.logout-btn')!;
-    logoutButton.click();
+    const logoutButton = compiled.querySelector('button.logout-btn') as HTMLElement;
+    logoutButton?.click();
   
     expect(component.logout).toHaveBeenCalled();
   });
