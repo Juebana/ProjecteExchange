@@ -26,4 +26,14 @@ describe('NavBarComponent', () => {
     const logoutButton = compiled.querySelector('button.logout-btn');
     expect(logoutButton).toBeTruthy();
   });
+
+  it('should call logout() when logout button is clicked', () => {
+    spyOn(component, 'logout'); 
+  
+    const compiled = fixture.nativeElement as HTMLElement;
+    const logoutButton = compiled.querySelector('button.logout-btn')!;
+    logoutButton.click();
+  
+    expect(component.logout).toHaveBeenCalled();
+  });
 });
