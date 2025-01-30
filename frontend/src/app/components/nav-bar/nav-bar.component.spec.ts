@@ -36,4 +36,19 @@ describe('NavBarComponent', () => {
   
     expect(component.logout).toHaveBeenCalled();
   });
+
+  it('should call goToProfile() when profile button is clicked', () => {
+    spyOn(component, 'goToProfile'); 
+  
+    fixture.detectChanges(); 
+  
+    const compiled = fixture.nativeElement as HTMLElement;
+    const profileButton = compiled.querySelector('button.profile-btn') as HTMLElement;
+  
+    expect(profileButton).toBeTruthy();
+  
+    profileButton?.click(); 
+  
+    expect(component.goToProfile).toHaveBeenCalled(); 
+  });
 });
