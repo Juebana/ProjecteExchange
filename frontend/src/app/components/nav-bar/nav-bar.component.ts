@@ -11,5 +11,9 @@ export class NavBarComponent {
   logout(): void {
     console.log('Logout clicked');
   }
+
+  goToProfile(): void {
+    console.log('Navigating to profile...');
+  }
 }
 
