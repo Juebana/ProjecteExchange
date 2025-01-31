@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { Router } from '@angular/router';
 import { NavBarComponent } from './nav-bar.component';
 
 describe('NavBarComponent', () => {
@@ -50,5 +50,14 @@ describe('NavBarComponent', () => {
     profileButton?.click(); 
   
     expect(component.goToProfile).toHaveBeenCalled(); 
+  });
+
+  it('should navigate to "/profile" when goToProfile() is called', () => {
+    const router = TestBed.inject(Router);
+    spyOn(router, 'navigate');
+  
+    component.goToProfile(); 
+  
+    expect(router.navigate).toHaveBeenCalledWith(['/profile']);
   });
 });
