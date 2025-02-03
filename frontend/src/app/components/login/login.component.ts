@@ -25,6 +25,7 @@
       this.authService.login(username, password).subscribe({
         next: (response) => {
           this.token = response.token;
+          localStorage.setItem('username', username);
           alert('Login successful!');
           // Optionally, redirect the user or perform other actions
         },
