@@ -60,4 +60,15 @@ describe('NavBarComponent', () => {
   
     expect(router.navigate).toHaveBeenCalledWith(['/profile']);
   });
+
+  it('should display the logged-in username', () => {
+    localStorage.setItem('username', 'TestUser');
+    component.ngOnInit();
+    fixture.detectChanges();
+  
+    const usernameElement = fixture.nativeElement.querySelector('.username');
+    expect(usernameElement.textContent).toContain('TestUser');
+  
+    localStorage.removeItem('username');
+  });
 });
