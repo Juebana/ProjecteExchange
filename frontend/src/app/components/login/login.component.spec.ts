@@ -4,11 +4,13 @@ import { LoginComponent } from '../login/login.component';
 import { AuthService } from '../../services/AuthService/auth.service';
 import { of } from 'rxjs';
 import { provideHttpClient } from '@angular/common/http';
+import { Router } from '@angular/router';
 
 describe('LoginComponent', () => {
   let component: LoginComponent;
   let fixture: ComponentFixture<LoginComponent>;
   let authService: jasmine.SpyObj<AuthService>;
+  let router: Router;
 
   beforeEach(async () => {
     const authServiceMock = jasmine.createSpyObj('AuthService', ['login']);
@@ -25,6 +27,7 @@ describe('LoginComponent', () => {
     fixture = TestBed.createComponent(LoginComponent);
     component = fixture.componentInstance;
     authService = TestBed.inject(AuthService) as jasmine.SpyObj<AuthService>;
+    router = TestBed.inject(Router);
     fixture.detectChanges();
   });
 
