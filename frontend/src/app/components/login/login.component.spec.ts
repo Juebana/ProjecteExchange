@@ -98,4 +98,15 @@ describe('LoginComponent', () => {
     expect(component.isRegistration).toBeTrue();
   });
   
+  it('should redirect to the dashboard after successful login', () => {
+    const routerSpy = spyOn(router, 'navigate'); 
+  
+    authService.login.and.returnValue(of({ token: 'valid-token' })); 
+  
+    component.username = 'testuser';
+    component.password = 'password';
+    component.onSubmit();
+  
+    expect(routerSpy).toHaveBeenCalledWith(['/dashboard']);
+  });
 });
