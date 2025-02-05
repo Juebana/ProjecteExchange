@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { Observable, map, tap } from 'rxjs';
+import { User } from '../../models/user.model';
 
 @Injectable({
   providedIn: 'root',
@@ -12,12 +12,15 @@ export class AuthService {
 
   constructor(private http: HttpClient) {}
 
-  login(username: string, password: string): Observable<any> {
+  login(username: string, password: string): Observable<User> {
     return this.http.post<any>(this.loginUrl, { username, password }).pipe(
-      tap((response) => {
+      tap(response => {
         if (response.token) {
           localStorage.setItem('token', response.token);
         }
+      }),
+      map(response => {
+        return new User(username, password, response.token);
       })
     );
   }
