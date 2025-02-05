@@ -109,6 +109,7 @@ describe('LoginComponent', () => {
     component.username = 'testuser';
     component.password = 'password';
     component.onSubmit();
+    fixture.detectChanges(); 
   
     expect(routerSpy).toHaveBeenCalledWith(['/dashboard']);
   });
