@@ -5,6 +5,7 @@ import { AuthService } from '../../services/AuthService/auth.service';
 import { of } from 'rxjs';
 import { provideHttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
+import { User } from '../../models/user.model';
 
 describe('LoginComponent', () => {
   let component: LoginComponent;
@@ -13,13 +14,13 @@ describe('LoginComponent', () => {
   let router: Router;
 
   beforeEach(async () => {
-    const authServiceMock = jasmine.createSpyObj('AuthService', ['login']);
+    const authServiceMock = jasmine.createSpyObj('AuthService', ['login', 'register']);
     authServiceMock.login.and.returnValue(of({ token: 'test-token' }));
 
     await TestBed.configureTestingModule({
       imports: [FormsModule, LoginComponent],
       providers: [
-        { provide: AuthService, useValue: authServiceMock, login: () => of({ token: 'test-token' }) }, 
+        { provide: AuthService, useValue: authServiceMock },
         provideHttpClient(),
       ],
     }).compileComponents();
@@ -37,11 +38,9 @@ describe('LoginComponent', () => {
 
   it('should show the inputs and the send button', () => {
     const compiled = fixture.nativeElement as HTMLElement;
-
     const usernameInput = compiled.querySelector('input#username');
     const passwordInput = compiled.querySelector('input#password');
     const submitButton = compiled.querySelector('button[type="submit"]');
-
     expect(usernameInput).toBeTruthy();
     expect(passwordInput).toBeTruthy();
     expect(submitButton).toBeTruthy();
@@ -50,7 +49,6 @@ describe('LoginComponent', () => {
 
   it('should disable the submit button if username or password is empty', () => {
     const compiled = fixture.nativeElement as HTMLElement;
-
     const usernameInput = compiled.querySelector('input#username') as HTMLInputElement;
     const passwordInput = compiled.querySelector('input#password') as HTMLInputElement;
     const submitButton = compiled.querySelector('button[type="submit"]') as HTMLButtonElement;
@@ -73,38 +71,32 @@ describe('LoginComponent', () => {
   it('should call AuthService.login with the correct credentials', () => {
     component.username = 'testuser';
     component.password = 'testpassword';
-
     component.onSubmit();
-
     expect(authService.login).toHaveBeenCalledWith('testuser', 'testpassword');
   });
 
   it('should set token on successful login', async () => {
     component.username = 'testuser';
-    component.password = 'testpassword';
+    component.password = 'testpass';
   
     component.onSubmit();
     fixture.detectChanges(); 
-    
+
     expect(component.token).toEqual('test-token'); 
   });
-  
+
   it('should display a toggle switch and allow switching between Login and Register', () => {
     const toggleSwitch = fixture.nativeElement.querySelector('input[type="checkbox"]');
-
     expect(component.isRegistration).toBeFalse();
-
     toggleSwitch.checked = true;
     toggleSwitch.dispatchEvent(new Event('change'));
     fixture.detectChanges();
-
     expect(component.isRegistration).toBeTrue();
   });
-  
+
   it('should redirect to the dashboard after successful login', () => {
     const routerSpy = spyOn(router, 'navigate'); 
-  
-    authService.login.and.returnValue(of({ token: 'valid-token' })); 
+    authService.login.and.returnValue(of(new User('testuser', 'password', 'valid-token'))); 
   
     component.username = 'testuser';
     component.password = 'password';
