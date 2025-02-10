@@ -28,47 +28,45 @@ describe('NavBarComponent', () => {
   });
 
   it('should call logout() when logout button is clicked', () => {
-    spyOn(component, 'logout'); 
+    spyOn(component, 'logout').and.callThrough();
+    spyOn(localStorage, 'removeItem');
     fixture.detectChanges();
     const compiled = fixture.nativeElement as HTMLElement;
     const logoutButton = compiled.querySelector('button.logout-btn') as HTMLElement;
-    logoutButton?.click();
+    logoutButton.click();
   
     expect(component.logout).toHaveBeenCalled();
+    expect(localStorage.removeItem).toHaveBeenCalledWith('user');
   });
 
   it('should call goToProfile() when profile button is clicked', () => {
     spyOn(component, 'goToProfile'); 
-  
     fixture.detectChanges(); 
-  
     const compiled = fixture.nativeElement as HTMLElement;
     const profileButton = compiled.querySelector('button.profile-btn') as HTMLElement;
   
     expect(profileButton).toBeTruthy();
-  
-    profileButton?.click(); 
-  
+    profileButton.click(); 
     expect(component.goToProfile).toHaveBeenCalled(); 
   });
 
   it('should navigate to "/profile" when goToProfile() is called', () => {
     const router = TestBed.inject(Router);
     spyOn(router, 'navigate');
-  
     component.goToProfile(); 
-  
     expect(router.navigate).toHaveBeenCalledWith(['/profile']);
   });
 
   it('should display the logged-in username', () => {
-    localStorage.setItem('username', 'TestUser');
+    const userData = { _username: 'TestUser', _password: 'dummy', _token: 'dummy-token' };
+    localStorage.setItem('user', JSON.stringify(userData));
+
     component.ngOnInit();
     fixture.detectChanges();
   
     const usernameElement = fixture.nativeElement.querySelector('.username');
     expect(usernameElement.textContent).toContain('TestUser');
   
-    localStorage.removeItem('username');
+    localStorage.removeItem('user');
   });
 });
