@@ -1,0 +1,26 @@
+.dashboard-container {
+    display: flex;
+    gap: 20px;
+    padding: 20px;
+  }
+  
+  .trading-view-placeholder {
+    flex: 2;
+    height: 400px;
+    background-color: #222;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .buy-sell-placeholder {
+    flex: 1;
+    height: 400px;
+    background-color: #333;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
