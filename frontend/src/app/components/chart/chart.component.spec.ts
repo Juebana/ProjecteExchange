@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { ChartComponent } from './chart.component';
 
 describe('ChartComponent', () => {
@@ -9,8 +8,7 @@ describe('ChartComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [ChartComponent]
-    })
-    .compileComponents();
+    }).compileComponents();
 
     fixture = TestBed.createComponent(ChartComponent);
     component = fixture.componentInstance;
@@ -19,5 +17,10 @@ describe('ChartComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should contain a div for the TradingView chart', () => {
+    const compiled = fixture.nativeElement as HTMLElement;
+    expect(compiled.querySelector('.trading-view-container')).toBeTruthy();
   });
 });
