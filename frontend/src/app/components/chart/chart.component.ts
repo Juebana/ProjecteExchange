@@ -22,7 +22,7 @@ export class ChartComponent implements AfterViewInit {
       container_id: 'tradingview_chart',
       width: '100%',
       height: '100%',
-      symbol: 'BINANCE:PEPEUSDC',
+      symbol: 'BINANCE:BTCUSDC',
       interval: '1',
       timezone: 'Etc/UTC',
       theme: 'dark',
