@@ -25,11 +25,9 @@ export class LoginComponent {
 
   login(username: string, password: string): void {
     this.authService.login(username, password).subscribe({
-      next: (response) => {
-        const user = new User(username, password, response.token!);
+      next: (user: User) => {
         localStorage.setItem('user', JSON.stringify(user));
         this.token = user.token ?? null;
-
         alert('Login successful!');
         this.router.navigate(['/dashboard']);
       },
@@ -54,7 +52,7 @@ export class LoginComponent {
     });
   }
 
-  onSubmit() {
+  onSubmit(): void {
     if (!this.isFormValid) {
       console.warn('Username or password is missing.');
       alert('Please fill in both username and password.');
