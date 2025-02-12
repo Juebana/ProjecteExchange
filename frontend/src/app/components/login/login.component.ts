@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { AuthService } from '../../services/AuthService/auth.service';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
+import { User } from '../../models/user.model';
 
 @Component({
   selector: 'app-sda-login',
@@ -25,8 +26,10 @@ export class LoginComponent {
   login(username: string, password: string): void {
     this.authService.login(username, password).subscribe({
       next: (response) => {
-        this.token = response.token!;
-        localStorage.setItem('username', username);
+        const user = new User(username, password, response.token!);
+        localStorage.setItem('user', JSON.stringify(user));
+        this.token = user.token ?? null;
+
         alert('Login successful!');
         this.router.navigate(['/dashboard']);
       },
@@ -48,25 +51,24 @@ export class LoginComponent {
         console.error('Registration failed:', err);
         alert('Registration failed. Please try again.');
       },
-     });
+    });
   }
 
-    onSubmit() {
-     if (!this.isFormValid) {
+  onSubmit() {
+    if (!this.isFormValid) {
       console.warn('Username or password is missing.');
       alert('Please fill in both username and password.');
       return;
     }
-  
-     try {
-       if (this.isRegistration) {
+
+    try {
+      if (this.isRegistration) {
         this.register(this.username, this.password);
       } else {
         this.login(this.username, this.password);
       }
-     } catch (error) {
+    } catch (error) {
       console.error('An error occurred:', error);
     }
   }
-    
 }

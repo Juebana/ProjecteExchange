@@ -22,6 +22,7 @@ export class ChartComponent implements AfterViewInit {
       container_id: 'tradingview_chart',
       width: '100%',
       height: '100%',
+      autosize: true,
       symbol: 'BINANCE:BTCUSDC',
       interval: '1',
       timezone: 'Etc/UTC',
@@ -29,9 +30,12 @@ export class ChartComponent implements AfterViewInit {
       style: '1',
       locale: 'en',
       enable_publishing: false,
-      hide_top_toolbar: true,
-      hide_legend: true,
-      withdateranges: false
+      hide_top_toolbar: false,
+      hide_legend: false,
+      withdateranges: true,
+      allow_symbol_change: true,
+      studies: [],
     });
   }
+  
 }
