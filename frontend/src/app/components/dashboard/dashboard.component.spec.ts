@@ -36,4 +36,9 @@ describe('DashboardComponent', () => {
     const compiled = fixture.nativeElement as HTMLElement;
     expect(compiled.querySelector('.buy-sell-placeholder')).toBeTruthy();
   });
+
+  it('should contain the BuySellComponent', () => {
+    const compiled = fixture.nativeElement as HTMLElement;
+    expect(compiled.querySelector('app-buysell')).toBeTruthy();
+  });
 });
