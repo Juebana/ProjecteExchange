@@ -48,4 +48,8 @@ describe('BuysellComponenS', () => {
     expect(priceInput).toBeTruthy();
   });
   
+  it('should always display amount input', () => {
+    const amountInput = fixture.nativeElement.querySelector('#amountInput') as HTMLInputElement;
+    expect(amountInput).toBeTruthy();
+  });
 });
