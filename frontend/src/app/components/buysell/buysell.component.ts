@@ -1,9 +1,10 @@
 import { Component } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-buysell',
   standalone: true,
-  imports: [],
+  imports: [FormsModule],
   templateUrl: './buysell.component.html',
   styleUrl: './buysell.component.css'
 })
