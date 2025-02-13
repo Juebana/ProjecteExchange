@@ -52,4 +52,16 @@ describe('BuysellComponenS', () => {
     const amountInput = fixture.nativeElement.querySelector('#amountInput') as HTMLInputElement;
     expect(amountInput).toBeTruthy();
   });
+
+  it('should display a button with correct text (Open Buy / Open Sell)', () => {
+    const openButton = fixture.nativeElement.querySelector('#openTradeBtn') as HTMLButtonElement;
+    expect(openButton).toBeTruthy();
+
+    expect(openButton.textContent).toContain('Open Buy');
+
+    component.isBuy = false;
+    fixture.detectChanges();
+    expect(openButton.textContent).toContain('Open Sell');
+  });
+  
 });
