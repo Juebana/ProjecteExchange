@@ -28,5 +28,12 @@ describe('BuysellComponent', () => {
     expect(buyRadio).toBeTruthy();
     expect(sellRadio).toBeTruthy();
   });
-  
+   
+  it('should display Market and Limit toggles', () => {
+    const compiled = fixture.nativeElement as HTMLElement;
+    const marketRadio = compiled.querySelector('#marketRadio') as HTMLInputElement;
+    const limitRadio = compiled.querySelector('#limitRadio') as HTMLInputElement;
+    expect(marketRadio).toBeTruthy();
+    expect(limitRadio).toBeTruthy();
+  });
 });
