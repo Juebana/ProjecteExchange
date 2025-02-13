@@ -20,4 +20,13 @@ describe('BuysellComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  it('should display Buy and Sell toggles', () => {
+    const compiled = fixture.nativeElement as HTMLElement;
+    const buyRadio = compiled.querySelector('#buyRadio') as HTMLInputElement;
+    const sellRadio = compiled.querySelector('#sellRadio') as HTMLInputElement;
+    expect(buyRadio).toBeTruthy();
+    expect(sellRadio).toBeTruthy();
+  });
+  
 });
