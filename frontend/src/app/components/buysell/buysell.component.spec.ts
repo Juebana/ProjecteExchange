@@ -36,4 +36,16 @@ describe('BuysellComponent', () => {
     expect(marketRadio).toBeTruthy();
     expect(limitRadio).toBeTruthy();
   });
+
+  it('should show price input only if Limit is selected', () => {
+    let priceInput = fixture.nativeElement.querySelector('#priceInput');
+    expect(priceInput).toBeNull();
+  
+    component.isLimit = true;
+    fixture.detectChanges();
+  
+    priceInput = fixture.nativeElement.querySelector('#priceInput');
+    expect(priceInput).toBeTruthy();
+  });
+  
 });
