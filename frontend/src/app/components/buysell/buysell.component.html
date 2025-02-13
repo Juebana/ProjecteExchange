@@ -1,27 +1,35 @@
-<div>
-    <label>
-      <input id="buyRadio" type="radio" name="tradeSide" [checked]="isBuy" (change)="isBuy = true" /> Buy
-    </label>
-    <label>
-      <input id="sellRadio" type="radio" name="tradeSide" [checked]="!isBuy" (change)="isBuy = false" /> Sell
-    </label>
-</div>
+<div class="buy-sell-container">
+
+    <div class="buy-sell-toggle">
+      <label>
+        <input id="buyRadio" type="radio" name="tradeSide" [checked]="isBuy" (change)="isBuy = true" /> Buy
+      </label>
+      <label>
+        <input id="sellRadio" type="radio" name="tradeSide" [checked]="!isBuy" (change)="isBuy = false" /> Sell
+      </label>
+    </div>
   
-<div>
-    <label>
-      <input id="marketRadio" type="radio" name="tradeType" [checked]="!isLimit" (change)="isLimit = false" /> Market
-    </label>
-    <label>
-      <input id="limitRadio" type="radio" name="tradeType" [checked]="isLimit" (change)="isLimit = true" /> Limit
-    </label>
-</div>
-
-<div *ngIf="isLimit">
-    <label for="priceInput">Price</label>
-    <input id="priceInput" type="number" [(ngModel)]="price" />
-</div>
-
-<div>
-    <label for="amountInput">Amount</label>
-    <input id="amountInput" type="number" [(ngModel)]="amount" />
-</div>  
+    <div class="market-limit-toggle">
+      <label>
+        <input id="marketRadio" type="radio" name="tradeType" [checked]="!isLimit" (change)="isLimit = false" /> Market
+      </label>
+      <label>
+        <input id="limitRadio" type="radio" name="tradeType" [checked]="isLimit" (change)="isLimit = true" /> Limit
+      </label>
+    </div>
+  
+    <div *ngIf="isLimit">
+      <label for="priceInput">Price</label>
+      <input id="priceInput" type="number" [(ngModel)]="price" />
+    </div>
+  
+    <div>
+      <label for="amountInput">Amount</label>
+      <input id="amountInput" type="number" [(ngModel)]="amount" />
+    </div>
+  
+    <button id="openTradeBtn" (click)="openTrade()">
+      {{ isBuy ? 'Open Buy' : 'Open Sell' }}
+    </button>
+  </div>
+  
