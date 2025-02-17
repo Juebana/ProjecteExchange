@@ -1,10 +1,19 @@
 export class User {
     constructor(
+      public _id: string,
       private _username: string,
       private _password: string,
       private _token?: string
     ) {}
-  
+    
+    get id(): string {
+      return this._id;
+    }
+
+    set id(value: string) {
+      this._id = value;
+    }
+
     get username(): string {
       return this._username;
     }
