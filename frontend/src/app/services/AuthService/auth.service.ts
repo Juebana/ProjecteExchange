@@ -19,7 +19,7 @@ export class AuthService {
           localStorage.setItem('token', response.token);
         }
       }),
-      map(response => new User(username, password, response.token))
+      map(response => new User(response.id, username, password, response.token))
     );
   }
 
