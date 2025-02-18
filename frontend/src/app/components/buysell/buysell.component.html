@@ -1,7 +1,7 @@
 <div class="buy-sell-container">
 
   <div class="buy-sell-toggle">
-    <label>
+    <label for="buyRadio">
       <input
         id="buyRadio"
         type="radio"
@@ -11,7 +11,7 @@
       />
       Buy
     </label>
-    <label>
+    <label for="sellRadio">
       <input
         id="sellRadio"
         type="radio"
@@ -24,7 +24,7 @@
   </div>
 
   <div class="market-limit-toggle">
-    <label>
+    <label for="marketRadio">
       <input
         id="marketRadio"
         type="radio"
@@ -34,7 +34,7 @@
       />
       Market
     </label>
-    <label>
+    <label for="limitRadio">
       <input
         id="limitRadio"
         type="radio"
@@ -54,14 +54,17 @@
   <div>
     <label for="amountInput">Amount</label>
     <input id="amountInput" type="number" [(ngModel)]="amount" />
+
+    <label for="currencySelect" class="visually-hidden">Currency</label>
     <select id="currencySelect" [(ngModel)]="selectedCurrency">
       <option value="usdc">USDC</option>
     </select>
   </div>
 
   <div class="checkbox-container">
-    <label>
+    <label for="termsCheckbox">
       <input
+        id="termsCheckbox"
         type="checkbox"
         [(ngModel)]="acceptedTerms"
       />
