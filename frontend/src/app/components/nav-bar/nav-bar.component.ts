@@ -11,7 +11,6 @@ import { User } from '../../models/user.model';
 })
 export class NavBarComponent implements OnInit {
   username: string | null = null;
-  id: string | null = null;
 
   constructor(private router: Router) {}
 
@@ -22,8 +21,6 @@ export class NavBarComponent implements OnInit {
         const parsedUser = JSON.parse(userData);
         const user = new User(parsedUser._id, parsedUser._username, parsedUser._password, parsedUser._token);
         this.username = user.username;
-        this.id = user.id;
-        console.log(this.id);
       } catch (error) {
         console.error('Error parsing user data from localStorage', error);
       }
