@@ -1,6 +1,6 @@
-import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-buysell',
@@ -15,9 +15,13 @@ export class BuySellComponent {
   price: number | null = null;
   amount: number | null = null;
   selectedCurrency: string = 'usdc';
-  acceptedTerms: boolean = false; 
+  acceptedTerms: boolean = false;
 
   openTrade(): void {
+    if (!this.acceptedTerms) {
+      alert('Please accept the terms and conditions.');
+      return;
+    }
     console.log(
       `Placing a ${this.isBuy ? 'BUY' : 'SELL'} order. 
        Type: ${this.isLimit ? 'Limit' : 'Market'}, 
@@ -25,5 +29,14 @@ export class BuySellComponent {
        Amount: ${this.amount} ${this.selectedCurrency}, 
        Terms accepted: ${this.acceptedTerms}`
     );
+  }
+
+  resetForm(): void {
+    this.isBuy = true;
+    this.isLimit = false;
+    this.price = null;
+    this.amount = null;
+    this.selectedCurrency = 'usdc';
+    this.acceptedTerms = false;
   }
 }
