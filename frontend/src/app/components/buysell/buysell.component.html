@@ -1,5 +1,14 @@
 <div class="buy-sell-container">
+  <!-- System Status Message (can be updated dynamically) -->
+  <div class="status-message" aria-live="polite">
+    <!-- For example, "Ready to trade" or error messages -->
+    Ready to trade.
+  </div>
 
+  <!-- Instructions -->
+  <p class="instructions">Fill out the form below to place your trade. Prices are in USDC.</p>
+
+  <!-- Buy/Sell toggles -->
   <div class="buy-sell-toggle">
     <label for="buyRadio">
       <input
@@ -25,6 +34,7 @@
     </label>
   </div>
 
+  <!-- Market/Limit toggles -->
   <div class="market-limit-toggle">
     <label for="marketRadio">
       <input
@@ -50,20 +60,23 @@
     </label>
   </div>
 
-  <div *ngIf="isLimit">
-    <label for="priceInput">Price</label>
-    <input id="priceInput" type="number" [(ngModel)]="price" tabindex="0" />
+  <!-- Price input: Only visible if Limit is selected -->
+  <div *ngIf="isLimit" class="input-group">
+    <label for="priceInput">Price (USDC)</label>
+    <input id="priceInput" type="number" [(ngModel)]="price" tabindex="0" placeholder="Enter price" />
   </div>
 
-  <div>
+  <!-- Amount and Currency select -->
+  <div class="input-group">
     <label for="amountInput">Amount</label>
-    <input id="amountInput" type="number" [(ngModel)]="amount" tabindex="0" />
+    <input id="amountInput" type="number" [(ngModel)]="amount" tabindex="0" placeholder="Enter amount" />
     <label for="currencySelect" class="visually-hidden">Currency</label>
     <select id="currencySelect" [(ngModel)]="selectedCurrency" tabindex="0">
       <option value="usdc">USDC</option>
     </select>
   </div>
 
+  <!-- Checkbox for Terms & Conditions -->
   <div class="checkbox-container">
     <label for="termsCheckbox">
       <input
@@ -76,8 +89,18 @@
     </label>
   </div>
 
-  <button id="openTradeBtn" (click)="openTrade()" tabindex="0">
-    {{ isBuy ? 'Open Buy' : 'Open Sell' }}
-  </button>
+  <!-- Inline error message if terms not accepted -->
+  <div class="error-message" *ngIf="!acceptedTerms">
+    You must accept the terms and conditions to place an order.
+  </div>
 
+  <!-- Action buttons -->
+  <div class="button-group">
+    <button id="openTradeBtn" (click)="openTrade()" tabindex="0">
+      {{ isBuy ? 'Open Buy' : 'Open Sell' }}
+    </button>
+    <button id="resetBtn" (click)="resetForm()" tabindex="0">
+      Reset Form
+    </button>
+  </div>
 </div>
