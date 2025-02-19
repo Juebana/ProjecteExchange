@@ -3,10 +3,27 @@
   flex-direction: column;
   gap: 1rem;
   width: 320px;
-  background-color: #242424; 
+  background-color: #242424;
   padding: 1rem;
   border-radius: 8px;
   color: #ffffff;
+  font-family: Arial, sans-serif;
+}
+
+.status-message {
+  font-size: 0.9rem;
+  color: #f1c40f; /* Yellow for status messages */
+}
+
+.instructions {
+  font-size: 0.9rem;
+  margin: 0;
+}
+
+.input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
 }
 
 .buy-sell-toggle,
@@ -20,6 +37,16 @@
   align-items: center;
 }
 
+.error-message {
+  color: #e74c3c;
+  font-size: 0.8rem;
+}
+
+.button-group {
+  display: flex;
+  gap: 1rem;
+}
+
 label {
   cursor: pointer;
   display: flex;
@@ -27,6 +54,7 @@ label {
   gap: 0.25rem;
 }
 
+/* Visually hidden for accessibility */
 .visually-hidden {
   position: absolute;
   width: 1px;
@@ -63,7 +91,7 @@ button {
   cursor: pointer;
   font-weight: bold;
   text-transform: uppercase;
-  width: 100%;
+  flex: 1;
 }
 
 button:hover {
