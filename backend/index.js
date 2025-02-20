@@ -4,7 +4,7 @@ const cors = require('cors');
 require('dotenv').config();
 
 const authRoutes = require('./routes/authRoutes');
-const ordersRoute = require('./routes/orders');
+const orderRoutes = require('./routes/orderRoutes');
 
 const app = express();
 const PORT = process.env.PORT;
@@ -33,7 +33,7 @@ app.use((req, res, next) => {
 });
 
 app.use('/auth', authRoutes);
-app.use('/order', ordersRoute);
+app.use('/order', orderRoutes);
 
 app.listen(PORT, () => {
     console.log(`Server is running on http://localhost:${PORT}`);
