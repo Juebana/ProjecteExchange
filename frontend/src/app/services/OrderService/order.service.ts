@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, map } from 'rxjs';
 import { Order } from '../../models/order.model';
 
 @Injectable({
@@ -11,7 +11,18 @@ export class OrderService {
 
   constructor(private http: HttpClient) {}
 
-  createOrder(orderData: Partial<Order>): Observable<Order> {
-    return this.http.post<Order>(this.orderUrl, orderData);
+  createOrder(orderData: any): Observable<Order> {
+    return this.http.post<any>(this.orderUrl, orderData).pipe(
+      map(response => new Order(
+        response.id,
+        response.userId,
+        response.tradeSide,
+        response.tradeType,
+        response.price,
+        response.amount,
+        response.currency,
+        response.created_at
+      ))
+    );
   }
 }
