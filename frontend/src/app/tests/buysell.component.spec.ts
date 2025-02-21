@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { BuySellComponent } from './buysell.component';
+import { BuySellComponent } from '../components/buysell/buysell.component';
 
 describe('BuysellComponenS', () => {
   let component: BuySellComponent;

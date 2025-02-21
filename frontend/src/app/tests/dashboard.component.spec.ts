@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { DashboardComponent } from './dashboard.component';
-import { NavBarComponent } from '../nav-bar/nav-bar.component';
-import { ChartComponent } from '../chart/chart.component';
+import { DashboardComponent } from '../components/dashboard/dashboard.component';
+import { NavBarComponent } from '../components/nav-bar/nav-bar.component';
+import { ChartComponent } from '../components/chart/chart.component';
 import { By } from '@angular/platform-browser';
 
 describe('DashboardComponent', () => {

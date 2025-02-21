@@ -1,11 +1,11 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
-import { LoginComponent } from '../login/login.component';
-import { AuthService } from '../../services/AuthService/auth.service';
+import { LoginComponent } from '../components/login/login.component';
+import { AuthService } from '../services/AuthService/auth.service';
 import { of } from 'rxjs';
 import { provideHttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
-import { User } from '../../models/user.model';
+import { User } from '../models/user.model';
 
 describe('LoginComponent', () => {
   let component: LoginComponent;
