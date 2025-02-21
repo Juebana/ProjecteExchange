@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { UserDTO } from '../../models/user.dto';
 import { User } from '../../models/user.model';
 
 @Component({
@@ -10,7 +11,7 @@ import { User } from '../../models/user.model';
   styleUrls: ['./nav-bar.component.css'] 
 })
 export class NavBarComponent implements OnInit {
-  username: string | null = null;
+  user?: User;
 
   constructor(private router: Router) {}
 
@@ -19,8 +20,7 @@ export class NavBarComponent implements OnInit {
     if (userData) {
       try {
         const parsedUser = JSON.parse(userData);
-        const user = new User(parsedUser._id, parsedUser._username, parsedUser._password, parsedUser._token);
-        this.username = user.username;
+        this.user = UserDTO.fromJSONToUser(parsedUser);
       } catch (error) {
         console.error('Error parsing user data from localStorage', error);
       }
