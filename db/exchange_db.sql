@@ -28,7 +28,7 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `orders` (
-  `id` char(36) NOT NULL,
+  `id` char(36) NOT NULL DEFAULT uuid(),
   `userId` char(36) NOT NULL,
   `tradeSide` enum('buy','sell') NOT NULL,
   `tradeType` enum('market','limit') NOT NULL,
