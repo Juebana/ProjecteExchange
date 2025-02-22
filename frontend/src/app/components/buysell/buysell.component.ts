@@ -4,6 +4,8 @@ import { CommonModule } from '@angular/common';
 import { OrderService } from '../../services/OrderService/order.service';
 import { Order } from '../../models/order.model';
 import { UserDTO } from '../../models/user.dto';
+import { PriceService } from '../../services/PriceService/price.service';
+import { firstValueFrom, Observable } from 'rxjs';
 
 @Component({
   selector: 'app-buysell',
@@ -16,13 +18,13 @@ export class BuySellComponent {
   order: Order = Order.createOrder('', '', 'buy', 'market', null, 0, 'usdc');
   acceptedTerms: boolean = false;
 
-  constructor(private orderService: OrderService) {}
+  constructor(private orderService: OrderService, private priceService: PriceService) {}
 
-  getMarketPrice(): number {
-    return 1.23;
+  getMarketPrice(): Observable<number> {
+    return this.priceService.getCurrentPrice('BTCUSDC');
   }
 
-  openTrade(): void {
+  async openTrade(): Promise<void> {
     if (!this.acceptedTerms) {
       alert('Please accept the terms and conditions.');
       return;
@@ -45,20 +47,26 @@ export class BuySellComponent {
     }
 
     if (this.order.tradeType === 'market') {
-      this.order.price = this.getMarketPrice();
-    }
-    
-    this.orderService.createOrder(this.order).subscribe({
-      next: () => {
-        console.log('Order created successfully.');
-        alert('Order successfully placed!');
-        this.resetForm();
-      },
-      error: (err) => {
-        console.error('Order creation failed:', err);
-        alert('Failed to place order. Please try again.');
+      try {
+        this.order.price = await firstValueFrom(this.getMarketPrice());
+      } catch (error) {
+        console.error('Failed to fetch market price:', error);
+        alert('Failed to get market price. Please try again.');
+        return;
       }
-    });
+      
+      this.orderService.createOrder(this.order).subscribe({
+        next: () => {
+          console.log('Order created successfully.');
+          alert('Order successfully placed!');
+          this.resetForm();
+        },
+        error: (err) => {
+          console.error('Order creation failed:', err);
+          alert('Failed to place order. Please try again.');
+        }
+      });
+    }
   }
 
   resetForm(): void {
