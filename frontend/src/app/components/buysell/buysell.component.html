@@ -15,8 +15,8 @@
         id="buyRadio"
         type="radio"
         name="tradeSide"
-        [checked]="isBuy"
-        (change)="isBuy = true"
+        [checked]="order.tradeSide === 'buy'"
+        (change)="order.tradeSide = 'buy'"
         tabindex="0"
       />
       Buy
@@ -26,8 +26,8 @@
         id="sellRadio"
         type="radio"
         name="tradeSide"
-        [checked]="!isBuy"
-        (change)="isBuy = false"
+        [checked]="order.tradeSide === 'sell'"
+        (change)="order.tradeSide = 'sell'"
         tabindex="0"
       />
       Sell
@@ -41,8 +41,8 @@
         id="marketRadio"
         type="radio"
         name="tradeType"
-        [checked]="!isLimit"
-        (change)="isLimit = false"
+        [checked]="order.tradeType === 'market'"
+        (change)="order.tradeType = 'market'"
         tabindex="0"
       />
       Market
@@ -52,31 +52,43 @@
         id="limitRadio"
         type="radio"
         name="tradeType"
-        [checked]="isLimit"
-        (change)="isLimit = true"
+        [checked]="order.tradeType === 'limit'"
+        (change)="order.tradeType = 'limit'"
         tabindex="0"
       />
       Limit
     </label>
   </div>
 
-  <!-- Price input: Only visible if Limit is selected -->
-  <div *ngIf="isLimit" class="input-group">
+  <!-- Price input: Only visible if order.tradeType is 'limit' -->
+  <div *ngIf="order.tradeType === 'limit'" class="input-group">
     <label for="priceInput">Price (USDC)</label>
-    <input id="priceInput" type="number" [(ngModel)]="price" tabindex="0" placeholder="Enter price" />
+    <input
+      id="priceInput"
+      type="number"
+      [(ngModel)]="order.price"
+      tabindex="0"
+      placeholder="Enter price"
+    />
   </div>
 
-  <!-- Amount and Currency select -->
+  <!-- Amount input and Currency select -->
   <div class="input-group">
     <label for="amountInput">Amount</label>
-    <input id="amountInput" type="number" [(ngModel)]="amount" tabindex="0" placeholder="Enter amount" />
+    <input
+      id="amountInput"
+      type="number"
+      [(ngModel)]="order.amount"
+      tabindex="0"
+      placeholder="Enter amount"
+    />
     <label for="currencySelect" class="visually-hidden">Currency</label>
-    <select id="currencySelect" [(ngModel)]="selectedCurrency" tabindex="0">
+    <select id="currencySelect" [(ngModel)]="order.currency" tabindex="0">
       <option value="usdc">USDC</option>
     </select>
   </div>
 
-  <!-- Checkbox for Terms & Conditions -->
+  <!-- Checkbox for Terms and Conditions -->
   <div class="checkbox-container">
     <label for="termsCheckbox">
       <input
@@ -97,7 +109,7 @@
   <!-- Action buttons -->
   <div class="button-group">
     <button id="openTradeBtn" (click)="openTrade()" tabindex="0">
-      {{ isBuy ? 'Open Buy' : 'Open Sell' }}
+      {{ order.tradeSide === 'buy' ? 'Open Buy' : 'Open Sell' }}
     </button>
     <button id="resetBtn" (click)="resetForm()" tabindex="0">
       Reset Form
