@@ -17,7 +17,7 @@ router.post('/postOrder', async (req, res) => {
       console.error(err);
       return res.status(500).json({ message: 'Database error.' });
     }
-    res.sendStatus(201);
+    res.json({ message: 'Order created successfully', orderId: results.insertId });
   });
 });
 
