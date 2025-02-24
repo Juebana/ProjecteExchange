@@ -2,13 +2,14 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, map, tap } from 'rxjs';
 import { User } from '../../models/user.model';
+import { environment } from '../../../enviroments/enviroment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  private loginUrl = 'http://localhost:3000/auth/login';
-  private registerUrl = 'http://localhost:3000/auth/register';
+  private loginUrl = environment.loginUrl;
+  private registerUrl = environment.registerUrl;
 
   constructor(private http: HttpClient) {}
 
