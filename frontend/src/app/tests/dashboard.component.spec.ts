@@ -2,7 +2,8 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { DashboardComponent } from '../components/dashboard/dashboard.component';
 import { NavBarComponent } from '../components/nav-bar/nav-bar.component';
 import { ChartComponent } from '../components/chart/chart.component';
-import { By } from '@angular/platform-browser';
+import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 
 describe('DashboardComponent', () => {
   let component: DashboardComponent;
@@ -10,6 +11,7 @@ describe('DashboardComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
+      providers: [provideHttpClientTesting(), provideHttpClient()],
       imports: [DashboardComponent, NavBarComponent, ChartComponent]
     }).compileComponents();
 
