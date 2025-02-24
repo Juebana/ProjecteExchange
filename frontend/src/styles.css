@@ -1,1 +1,127 @@
-/* You can add global styles to this file, and also import other style files */
+/* Define reusable color variables */
+:root {
+    --primary-color: #007bff;    /* Vibrant blue for buttons and links */
+    --secondary-color: #f8f9fa;  /* Light gray for backgrounds */
+    --text-color: #212529;       /* Dark gray for text */
+    --border-color: #ced4da;     /* Medium gray for borders */
+  }
+  
+  /* Set up the body for centering the forms */
+  body {
+    font-family: 'Roboto', sans-serif; /* Clean, modern font */
+    background-color: var(--secondary-color);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+  }
+  
+  /* Shared form container styles */
+  .form-container {
+    background-color: white;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+    max-width: 400px; /* Optimal width for forms */
+    width: 100%;
+    animation: fadeIn 0.5s ease-out; /* Fade-in animation on load */
+  }
+  
+  /* Form title */
+  .form-container h2 {
+    text-align: center;
+    margin-bottom: 1.5rem;
+    color: var(--text-color);
+    font-size: 1.5rem;
+  }
+  
+  /* Form group (label + input) */
+  .form-group {
+    margin-bottom: 1rem; /* Spacing between fields */
+  }
+  
+  /* Labels */
+  .form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: bold;
+    color: var(--text-color);
+  }
+  
+  /* Inputs */
+  .form-group input {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    background-color: var(--secondary-color);
+    color: var(--text-color);
+    font-size: 1rem; /* 16px for readability */
+    transition: border-color 0.3s; /* Smooth border transition */
+  }
+  
+  /* Focus state for accessibility */
+  .form-group input:focus {
+    border-color: var(--primary-color);
+    outline: none; /* Remove default outline, use border instead */
+  }
+  
+  /* Button styles */
+  button {
+    width: 100%;
+    padding: 0.75rem;
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background-color 0.3s, transform 0.1s; /* Smooth hover and click effects */
+  }
+  
+  /* Button hover state */
+  button:hover {
+    background-color: #0056b3; /* Darker blue on hover */
+  }
+  
+  /* Button active state (click feedback) */
+  button:active {
+    transform: scale(0.98); /* Slight scale-down on click */
+  }
+  
+  /* Disabled button state */
+  button[disabled] {
+    background-color: #6c757d; /* Gray for disabled state */
+    cursor: not-allowed;
+  }
+  
+  /* Paragraphs (e.g., for links) */
+  p {
+    text-align: center;
+    margin-top: 1rem;
+    color: var(--text-color);
+  }
+  
+  /* Links */
+  a {
+    color: var(--primary-color);
+    text-decoration: none;
+  }
+  
+  /* Link hover state */
+  a:hover {
+    text-decoration: underline;
+  }
+  
+  /* Fade-in animation */
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(-20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
