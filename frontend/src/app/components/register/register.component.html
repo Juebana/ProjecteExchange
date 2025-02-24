@@ -1,1 +1,24 @@
-<p>register works!</p>
+<form (ngSubmit)="onSubmit()">
+    <div>
+      <label for="username">Username</label>
+      <input
+        id="username"
+        type="text"
+        [(ngModel)]="username"
+        [ngModelOptions]="{ standalone: true }"
+        placeholder="Enter your username"
+      />
+    </div>
+    <div>
+      <label for="password">Password</label>
+      <input
+        id="password"
+        type="password"
+        [(ngModel)]="password"
+        [ngModelOptions]="{ standalone: true }"
+        placeholder="Enter your password"
+      />
+    </div>
+    <button type="submit" [disabled]="!isFormValid">Register</button>
+  </form>
+  <p>Already have an account? <a routerLink="/login">Log In</a></p>
