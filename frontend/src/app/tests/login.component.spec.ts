@@ -4,9 +4,10 @@ import { LoginComponent } from '../components/login/login.component';
 import { AuthService } from '../services/AuthService/auth.service';
 import { of } from 'rxjs';
 import { provideHttpClient } from '@angular/common/http';
-import { Router } from '@angular/router';
+import { provideRouter, Router } from '@angular/router';
 import { User } from '../models/user.model';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
+import { DashboardComponent } from '../components/dashboard/dashboard.component';
 
 describe('LoginComponent', () => {
   let component: LoginComponent;
@@ -23,7 +24,8 @@ describe('LoginComponent', () => {
       providers: [
         { provide: AuthService, useValue: authServiceMock },
         provideHttpClient(),
-        provideHttpClientTesting()
+        provideHttpClientTesting(),
+        provideRouter([{ path: 'dashboard', component: DashboardComponent }]),
       ],
     }).compileComponents();
 
@@ -85,13 +87,16 @@ describe('LoginComponent', () => {
     expect(component.token).toEqual('test-token');
   });
 
-  it('should redirect to the dashboard after successful login', () => {
+  it('should redirect to the dashboard after successful login and alert dismissal', () => {
     const routerSpy = spyOn(router, 'navigate');
     authService.login.and.returnValue(of(new User('testuser', 'password', 'valid-token')));
 
     component.username = 'testuser';
     component.password = 'password';
     component.onSubmit();
+    fixture.detectChanges();
+
+    component.onAlertDismissed();
     fixture.detectChanges();
 
     expect(routerSpy).toHaveBeenCalledWith(['/dashboard']);

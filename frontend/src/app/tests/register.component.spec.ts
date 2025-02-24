@@ -4,8 +4,9 @@ import { RegisterComponent } from '../components/register/register.component';
 import { AuthService } from '../services/AuthService/auth.service';
 import { of } from 'rxjs';
 import { provideHttpClient } from '@angular/common/http';
-import { Router } from '@angular/router';
+import { provideRouter, Router } from '@angular/router';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
+import { LoginComponent } from '../components/login/login.component';
 
 describe('RegisterComponent', () => {
   let component: RegisterComponent;
@@ -22,7 +23,10 @@ describe('RegisterComponent', () => {
       providers: [
         { provide: AuthService, useValue: authServiceMock },
         provideHttpClient(),
-        provideHttpClientTesting()
+        provideHttpClientTesting(),
+        provideRouter([
+          { path: 'login', component: LoginComponent }
+        ]),
       ],
     }).compileComponents();
 
@@ -78,6 +82,7 @@ describe('RegisterComponent', () => {
     component.username = 'testuser';
     component.password = 'password';
     component.onSubmit();
+    component.onAlertDismissed();
     fixture.detectChanges();
     expect(routerSpy).toHaveBeenCalledWith(['/login']);
   });
