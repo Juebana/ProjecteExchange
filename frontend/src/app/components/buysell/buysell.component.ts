@@ -54,19 +54,26 @@ export class BuySellComponent {
         alert('Failed to get market price. Please try again.');
         return;
       }
-      
-      this.orderService.createOrder(this.order).subscribe({
-        next: () => {
-          console.log('Order created successfully.');
-          alert('Order successfully placed!');
-          this.resetForm();
-        },
-        error: (err) => {
-          console.error('Order creation failed:', err);
-          alert('Failed to place order. Please try again.');
-        }
-      });
+    } 
+
+    else if (this.order.tradeType === 'limit') {
+      if (this.order.price == null || this.order.price <= 0) {
+        alert('Please enter a valid price for limit order.');
+        return;
+      }
     }
+
+    this.orderService.createOrder(this.order).subscribe({
+      next: () => {
+        console.log('Order created successfully.');
+        alert('Order successfully placed!');
+        this.resetForm();
+      },
+      error: (err) => {
+        console.error('Order creation failed:', err);
+        alert('Failed to place order. Please try again.');
+      }
+    });
   }
 
   resetForm(): void {
