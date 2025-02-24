@@ -1,8 +1,8 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { RegisterComponent } from '../components/register/register.component';
 import { AuthService } from '../services/AuthService/auth.service';
-import { of } from 'rxjs';
+import { of, throwError } from 'rxjs';
 import { provideHttpClient } from '@angular/common/http';
 import { provideRouter, Router } from '@angular/router';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
@@ -71,19 +71,53 @@ describe('RegisterComponent', () => {
   });
 
   it('should call AuthService.register with the correct credentials', () => {
-    component.username = 'testuser';
-    component.password = 'testpassword';
+    component.user.username = 'testuser';
+    component.user.password = 'testpassword';
     component.onSubmit();
     expect(authService.register).toHaveBeenCalledWith('testuser', 'testpassword');
   });
 
   it('should redirect to login after successful registration', () => {
     const routerSpy = spyOn(router, 'navigate');
-    component.username = 'testuser';
-    component.password = 'password';
+    component.user.username = 'testuser';
+    component.user.password = 'password';
     component.onSubmit();
     component.onAlertDismissed();
     fixture.detectChanges();
     expect(routerSpy).toHaveBeenCalledWith(['/login']);
+  });
+
+  it('should update user object when inputs change', () => {
+    const usernameInput = fixture.nativeElement.querySelector('input#username') as HTMLInputElement;
+    const passwordInput = fixture.nativeElement.querySelector('input#password') as HTMLInputElement;
+
+    usernameInput.value = 'newuser';
+    usernameInput.dispatchEvent(new Event('input'));
+    passwordInput.value = 'newpassword';
+    passwordInput.dispatchEvent(new Event('input'));
+    fixture.detectChanges();
+
+    expect(component.user.username).toBe('newuser');
+    expect(component.user.password).toBe('newpassword');
+  });
+
+  it('should show alert on registration failure', fakeAsync(() => {
+    authService.register.and.returnValue(throwError(() => new Error('Registration failed')));
+    component.user.username = 'testuser';
+    component.user.password = 'testpassword';
+    component.onSubmit();
+    tick();
+    fixture.detectChanges();
+    expect(component.showAlert).toBeTrue();
+    expect(component.alertMessage).toBe('Registration failed. Please try again.');
+  }));
+
+  it('should show alert when form is invalid', () => {
+    component.user.username = '';
+    component.user.password = '';
+    component.onSubmit();
+    fixture.detectChanges();
+    expect(component.showAlert).toBeTrue();
+    expect(component.alertMessage).toBe('Please fill in both username and password.');
   });
 });
