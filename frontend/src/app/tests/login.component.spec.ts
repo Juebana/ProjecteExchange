@@ -6,6 +6,7 @@ import { of } from 'rxjs';
 import { provideHttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { User } from '../models/user.model';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 
 describe('LoginComponent', () => {
   let component: LoginComponent;
@@ -22,6 +23,7 @@ describe('LoginComponent', () => {
       providers: [
         { provide: AuthService, useValue: authServiceMock },
         provideHttpClient(),
+        provideHttpClientTesting()
       ],
     }).compileComponents();
 

@@ -5,6 +5,7 @@ import { AuthService } from '../services/AuthService/auth.service';
 import { of } from 'rxjs';
 import { provideHttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 
 describe('RegisterComponent', () => {
   let component: RegisterComponent;
@@ -21,6 +22,7 @@ describe('RegisterComponent', () => {
       providers: [
         { provide: AuthService, useValue: authServiceMock },
         provideHttpClient(),
+        provideHttpClientTesting()
       ],
     }).compileComponents();
 
