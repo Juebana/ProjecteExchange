@@ -1,1 +1,6 @@
-<p>custom-alert works!</p>
+<div class="custom-alert" *ngIf="showAlert">
+    <div class="alert-box">
+      <p class="alert-message">{{ alertMessage }}</p>
+      <button class="alert-button" (click)="dismiss()">OK</button>
+    </div>
+  </div>
