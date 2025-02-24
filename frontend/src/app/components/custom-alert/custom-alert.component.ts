@@ -1,12 +1,17 @@
-import { Component } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'app-custom-alert',
-  standalone: true,
-  imports: [],
   templateUrl: './custom-alert.component.html',
-  styleUrl: './custom-alert.component.css'
+  styleUrls: ['./custom-alert.component.css'],
+  standalone: true 
 })
 export class CustomAlertComponent {
+  @Input() showAlert: boolean = false;
+  @Input() alertMessage: string = '';
+  @Output() dismissed = new EventEmitter<void>();
 
+  dismiss() {
+    this.dismissed.emit();
+  }
 }
