@@ -1,13 +1,13 @@
 import { Component } from '@angular/core';
 import { AuthService } from '../../services/AuthService/auth.service';
 import { FormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { User } from '../../models/user.model';
 
 @Component({
-  selector: 'app-sda-login',
+  selector: 'app-login',
   standalone: true,
-  imports: [FormsModule],
+  imports: [FormsModule, RouterModule],
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css'],
 })
