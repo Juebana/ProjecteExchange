@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { LoginComponent } from '../components/login/login.component';
 import { AuthService } from '../services/AuthService/auth.service';
@@ -17,7 +17,8 @@ describe('LoginComponent', () => {
 
   beforeEach(async () => {
     const authServiceMock = jasmine.createSpyObj('AuthService', ['login']);
-    authServiceMock.login.and.returnValue(of({ token: 'test-token' }));
+    const mockUser = new User('dummyId', 'testuser', 'testpass', 'test-token');
+    authServiceMock.login.and.returnValue(of(mockUser));
 
     await TestBed.configureTestingModule({
       imports: [FormsModule, LoginComponent],
@@ -73,26 +74,27 @@ describe('LoginComponent', () => {
   });
 
   it('should call AuthService.login with the correct credentials', () => {
-    component.username = 'testuser';
-    component.password = 'testpassword';
+    component.user.username = 'testuser';
+    component.user.password = 'testpassword';
     component.onSubmit();
     expect(authService.login).toHaveBeenCalledWith('testuser', 'testpassword');
   });
 
-  it('should set token on successful login', () => {
-    component.username = 'testuser';
-    component.password = 'testpass';
+  it('should set token on successful login', fakeAsync(() => {
+    component.user.username = 'testuser';
+    component.user.password = 'testpass';
     component.onSubmit();
+    tick();
     fixture.detectChanges();
     expect(component.token).toEqual('test-token');
-  });
+  }));
 
   it('should redirect to the dashboard after successful login and alert dismissal', () => {
     const routerSpy = spyOn(router, 'navigate');
-    authService.login.and.returnValue(of(new User('testuser', 'password', 'valid-token')));
+    authService.login.and.returnValue(of(new User('dummyId', 'testuser', 'password', 'valid-token')));
 
-    component.username = 'testuser';
-    component.password = 'password';
+    component.user.username = 'testuser';
+    component.user.password = 'password';
     component.onSubmit();
     fixture.detectChanges();
 
