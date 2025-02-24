@@ -13,8 +13,7 @@ import { CustomAlertComponent } from '../custom-alert/custom-alert.component';
   styleUrls: ['./login.component.css'],
 })
 export class LoginComponent {
-  username: string = '';
-  password: string = '';
+  user: User = new User('', '', '');
   token: string | null = null;
 
   showAlert: boolean = false;
@@ -24,7 +23,7 @@ export class LoginComponent {
   constructor(private authService: AuthService, private router: Router) {}
 
   get isFormValid(): boolean {
-    return this.username.trim() !== '' && this.password.trim() !== '';
+    return this.user.username.trim() !== '' && this.user.password.trim() !== '';
   }
 
   onSubmit(): void {
@@ -37,11 +36,11 @@ export class LoginComponent {
     }
 
     try {
-      this.authService.login(this.username, this.password).subscribe({
+      this.authService.login(this.user.username, this.user.password).subscribe({
         next: (user: User) => {
           localStorage.setItem('user', JSON.stringify(user));
           this.token = user.token ?? null;
-          this.alertMessage = 'Login succesful! Redirecting to dashboard...';
+          this.alertMessage = 'Login successful! Redirecting to dashboard...';
           this.showAlert = true;
           this.loginSuccess = true;
         },
