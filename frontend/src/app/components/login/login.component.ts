@@ -15,41 +15,11 @@ export class LoginComponent {
   username: string = '';
   password: string = '';
   token: string | null = null;
-  isRegistration: boolean = false;
 
   constructor(private authService: AuthService, private router: Router) {}
 
   get isFormValid(): boolean {
     return this.username.trim() !== '' && this.password.trim() !== '';
-  }
-
-  login(username: string, password: string): void {
-    this.authService.login(username, password).subscribe({
-      next: (user: User) => {
-        localStorage.setItem('user', JSON.stringify(user));
-        this.token = user.token ?? null;
-        alert('Login successful!');
-        this.router.navigate(['/dashboard']);
-      },
-      error: (err) => {
-        console.error('Login failed:', err);
-        alert('Login failed. Please check your credentials.');
-      },
-    });
-  }
-
-  register(username: string, password: string): void {
-    this.authService.register(username, password).subscribe({
-      next: () => {
-        console.log('Registration successful.');
-        alert('Registration successful! You can now log in.');
-        this.isRegistration = false;
-      },
-      error: (err) => {
-        console.error('Registration failed:', err);
-        alert('Registration failed. Please try again.');
-      },
-    });
   }
 
   onSubmit(): void {
@@ -60,11 +30,18 @@ export class LoginComponent {
     }
 
     try {
-      if (this.isRegistration) {
-        this.register(this.username, this.password);
-      } else {
-        this.login(this.username, this.password);
-      }
+      this.authService.login(this.username, this.password).subscribe({
+        next: (user: User) => {
+          localStorage.setItem('user', JSON.stringify(user));
+          this.token = user.token ?? null;
+          alert('Login successful!');
+          this.router.navigate(['/dashboard']);
+        },
+        error: (err) => {
+          console.error('Login failed:', err);
+          alert('Login failed. Please check your credentials.');
+        },
+      });
     } catch (error) {
       console.error('An error occurred:', error);
     }
