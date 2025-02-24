@@ -3,6 +3,7 @@ import { AuthService } from '../../services/AuthService/auth.service';
 import { Router, RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { CustomAlertComponent } from '../custom-alert/custom-alert.component';
+import { User } from '../../models/user.model';
 
 @Component({
   selector: 'app-register',
@@ -12,8 +13,7 @@ import { CustomAlertComponent } from '../custom-alert/custom-alert.component';
   styleUrls: ['./register.component.css'],
 })
 export class RegisterComponent {
-  username: string = '';
-  password: string = '';
+  user: User = new User('', '', '');
 
   showAlert: boolean = false;
   alertMessage: string = '';
@@ -22,7 +22,7 @@ export class RegisterComponent {
   constructor(private authService: AuthService, private router: Router) {}
 
   get isFormValid(): boolean {
-    return this.username.trim() !== '' && this.password.trim() !== '';
+    return this.user.username.trim() !== '' && this.user.password.trim() !== '';
   }
 
   onSubmit(): void {
@@ -35,7 +35,7 @@ export class RegisterComponent {
     }
 
     try {
-      this.authService.register(this.username, this.password).subscribe({
+      this.authService.register(this.user.username, this.user.password).subscribe({
         next: () => {
           console.log('Registration successful.');
           this.alertMessage = 'Registration successful! You can now log in.';
