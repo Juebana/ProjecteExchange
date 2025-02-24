@@ -33,7 +33,7 @@ export class ChartComponent implements AfterViewInit {
       hide_top_toolbar: false,
       hide_legend: false,
       withdateranges: true,
-      allow_symbol_change: true,
+      allow_symbol_change: false,
       studies: [],
     });
   }
