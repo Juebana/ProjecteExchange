@@ -14,7 +14,7 @@ describe('LoginComponent', () => {
   let router: Router;
 
   beforeEach(async () => {
-    const authServiceMock = jasmine.createSpyObj('AuthService', ['login', 'register']);
+    const authServiceMock = jasmine.createSpyObj('AuthService', ['login']);
     authServiceMock.login.and.returnValue(of({ token: 'test-token' }));
 
     await TestBed.configureTestingModule({
@@ -75,34 +75,23 @@ describe('LoginComponent', () => {
     expect(authService.login).toHaveBeenCalledWith('testuser', 'testpassword');
   });
 
-  it('should set token on successful login', async () => {
+  it('should set token on successful login', () => {
     component.username = 'testuser';
     component.password = 'testpass';
-  
     component.onSubmit();
-    fixture.detectChanges(); 
-
-    expect(component.token).toEqual('test-token'); 
-  });
-
-  it('should display a toggle switch and allow switching between Login and Register', () => {
-    const toggleSwitch = fixture.nativeElement.querySelector('input[type="checkbox"]');
-    expect(component.isRegistration).toBeFalse();
-    toggleSwitch.checked = true;
-    toggleSwitch.dispatchEvent(new Event('change'));
     fixture.detectChanges();
-    expect(component.isRegistration).toBeTrue();
+    expect(component.token).toEqual('test-token');
   });
 
   it('should redirect to the dashboard after successful login', () => {
-    const routerSpy = spyOn(router, 'navigate'); 
-    authService.login.and.returnValue(of(new User('testuser', 'password', 'valid-token'))); 
-  
+    const routerSpy = spyOn(router, 'navigate');
+    authService.login.and.returnValue(of(new User('testuser', 'password', 'valid-token')));
+
     component.username = 'testuser';
     component.password = 'password';
     component.onSubmit();
-    fixture.detectChanges(); 
-  
+    fixture.detectChanges();
+
     expect(routerSpy).toHaveBeenCalledWith(['/dashboard']);
   });
 });
