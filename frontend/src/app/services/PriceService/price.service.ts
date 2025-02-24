@@ -2,12 +2,13 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { environment } from '../../../enviroments/enviroment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class PriceService {
-  private binanceApiUrl = 'https://api.binance.com/api/v3/ticker/price';
+  private binanceApiUrl = environment.priceUrl;
 
   constructor(private http: HttpClient) {}
 
