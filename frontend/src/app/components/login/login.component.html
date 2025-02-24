@@ -1,16 +1,3 @@
-<div class="toggle-container">
-  <span class="login-text">Log In</span>
-  <label class="toggle-switch">
-    <input
-      type="checkbox"
-      [(ngModel)]="isRegistration"
-      [ngModelOptions]="{ standalone: true }"
-    />
-    <span class="slider"></span>
-  </label>
-  <span class="register-text">Register</span>
-</div>
-
 <form (ngSubmit)="onSubmit()">
   <div>
     <label for="username">Username</label>
@@ -32,7 +19,6 @@
       placeholder="Enter your password"
     />
   </div>
-  <button type="submit" [disabled]="!isFormValid">
-    {{ isRegistration ? 'Register' : 'Log In' }}
-  </button>
+  <button type="submit" [disabled]="!isFormValid">Log In</button>
 </form>
+<p>Don't have an account? <a routerLink="/register">Register</a></p>
