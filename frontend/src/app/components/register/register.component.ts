@@ -14,8 +14,10 @@ import { CustomAlertComponent } from '../custom-alert/custom-alert.component';
 export class RegisterComponent {
   username: string = '';
   password: string = '';
+
   showAlert: boolean = false;
   alertMessage: string = '';
+  registerSuccess: boolean = false;
 
   constructor(private authService: AuthService, private router: Router) {}
 
@@ -28,6 +30,7 @@ export class RegisterComponent {
       console.warn('Username or password is missing.');
       this.alertMessage = 'Please fill in both username and password.';
       this.showAlert = true;
+      this.registerSuccess = false;
       return;
     }
 
@@ -37,16 +40,24 @@ export class RegisterComponent {
           console.log('Registration successful.');
           this.alertMessage = 'Registration successful! You can now log in.';
           this.showAlert = true;
-          this.router.navigate(['/login']);
+          this.registerSuccess = true;
         },
         error: (err) => {
           console.error('Registration failed:', err);
           this.alertMessage = 'Registration failed. Please try again.';
           this.showAlert = true;
+          this.registerSuccess = false;
         },
       });
     } catch (error) {
       console.error('An error occurred:', error);
+    }
+  }
+
+  onAlertDismissed() {
+    this.showAlert = false;
+    if (this.registerSuccess) {
+      this.router.navigate(['/login']);
     }
   }
 }

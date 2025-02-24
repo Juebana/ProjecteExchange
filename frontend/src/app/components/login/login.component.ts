@@ -16,8 +16,10 @@ export class LoginComponent {
   username: string = '';
   password: string = '';
   token: string | null = null;
+
   showAlert: boolean = false;
   alertMessage: string = '';
+  loginSuccess: boolean = false;
 
   constructor(private authService: AuthService, private router: Router) {}
 
@@ -30,6 +32,7 @@ export class LoginComponent {
       console.warn('Username or password is missing.');
       this.alertMessage = 'Please fill in both username and password.';
       this.showAlert = true;
+      this.loginSuccess = false;
       return;
     }
 
@@ -40,15 +43,23 @@ export class LoginComponent {
           this.token = user.token ?? null;
           this.alertMessage = 'Login succesful! Redirecting to dashboard...';
           this.showAlert = true;
-          this.router.navigate(['/dashboard']);
+          this.loginSuccess = true;
         },
         error: (err) => {
           this.alertMessage = 'Login failed. Please check your credentials.';
           this.showAlert = true;
+          this.loginSuccess = false;
         },
       });
     } catch (error) {
       console.error('An error occurred:', error);
+    }
+  }
+
+  onAlertDismissed() {
+    this.showAlert = false;
+    if (this.loginSuccess) {
+      this.router.navigate(['/dashboard']);
     }
   }
 }
