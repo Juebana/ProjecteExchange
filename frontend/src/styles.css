@@ -4,124 +4,143 @@
     --secondary-color: #f8f9fa;  /* Light gray for backgrounds */
     --text-color: #212529;       /* Dark gray for text */
     --border-color: #ced4da;     /* Medium gray for borders */
-  }
   
-  /* Set up the body for centering the forms */
-  body {
-    font-family: 'Roboto', sans-serif; /* Clean, modern font */
-    background-color: var(--secondary-color);
+    /* Global styles */
+    body {
+    font-family: 'Roboto', sans-serif;
+    background-color: #f0f2f5; /* Light gray background */
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
     margin: 0;
-  }
+    padding: 0;
+    }
   
-  /* Shared form container styles */
-  .form-container {
+    /* Form container */
+    .form-container {
     background-color: white;
     padding: 2rem;
     border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
-    max-width: 400px; /* Optimal width for forms */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    max-width: 450px; /* Slightly wider */
     width: 100%;
-    animation: fadeIn 0.5s ease-out; /* Fade-in animation on load */
-  }
-  
-  /* Form title */
-  .form-container h2 {
+    }
+
+    /* Form title */
+    .form-container h2 {
     text-align: center;
     margin-bottom: 1.5rem;
-    color: var(--text-color);
+    color: #333;
     font-size: 1.5rem;
-  }
+    width: 100%;
+    }
+
+    /* Form group (labels and inputs) */
+    .form-group {
+    margin-bottom: 1rem;
+    width: 100%;
+    }
   
-  /* Form group (label + input) */
-  .form-group {
-    margin-bottom: 1rem; /* Spacing between fields */
-  }
-  
-  /* Labels */
-  .form-group label {
+    /* Labels */
+    .form-group label {
     display: block;
     margin-bottom: 0.5rem;
     font-weight: bold;
-    color: var(--text-color);
-  }
-  
-  /* Inputs */
-  .form-group input {
-    width: 100%;
+    color: #333;
+    text-align: left;
+    }
+
+    /* Inputs */
+    .form-group input {
+    width: 90%;
     padding: 0.75rem;
-    border: 1px solid var(--border-color);
+    border: 1px solid #ccc;
     border-radius: 4px;
-    background-color: var(--secondary-color);
-    color: var(--text-color);
-    font-size: 1rem; /* 16px for readability */
-    transition: border-color 0.3s; /* Smooth border transition */
-  }
+    background-color: #e7f0fe; /* Light blue */
+    color: #333;
+    font-size: 1rem;
+    margin: 0 auto;
+    display: block;
+    box-sizing: border-box;
+    }
   
-  /* Focus state for accessibility */
-  .form-group input:focus {
+    /* Focus state for accessibility */
+    .form-group input:focus {
     border-color: var(--primary-color);
     outline: none; /* Remove default outline, use border instead */
-  }
+    }
   
-  /* Button styles */
-  button {
-    width: 100%;
+    /* Button */
+    button {
+    width: 90%;
     padding: 0.75rem;
-    background-color: var(--primary-color);
+    background-color: #007bff;
     color: white;
     border: none;
     border-radius: 4px;
     cursor: pointer;
     font-size: 1rem;
-    transition: background-color 0.3s, transform 0.1s; /* Smooth hover and click effects */
-  }
+    margin: 1rem auto 0;
+    display: block;
+    }
   
-  /* Button hover state */
-  button:hover {
+    /* Button hover state */
+    button:hover {
     background-color: #0056b3; /* Darker blue on hover */
-  }
-  
-  /* Button active state (click feedback) */
-  button:active {
+    }
+
+    /* Button active state (click feedback) */
+    button:active {
     transform: scale(0.98); /* Slight scale-down on click */
-  }
-  
-  /* Disabled button state */
-  button[disabled] {
+    }
+
+    /* Disabled button state */
+    button[disabled] {
     background-color: #6c757d; /* Gray for disabled state */
     cursor: not-allowed;
-  }
+    }
   
-  /* Paragraphs (e.g., for links) */
-  p {
+    /* Paragraph/Link */
+    p {
     text-align: center;
     margin-top: 1rem;
-    color: var(--text-color);
-  }
+    color: #333;
+    width: 100%;
+    }
   
-  /* Links */
-  a {
+    /* Links */
+    a {
     color: var(--primary-color);
     text-decoration: none;
-  }
-  
-  /* Link hover state */
-  a:hover {
+    }
+
+    /* Link hover state */
+    a:hover {
     text-decoration: underline;
-  }
+    }
   
-  /* Fade-in animation */
-  @keyframes fadeIn {
+    /* Fade-in animation */
+    @keyframes fadeIn {
     from {
-      opacity: 0;
-      transform: translateY(-20px);
+        opacity: 0;
+        transform: translateY(-20px);
     }
     to {
-      opacity: 1;
-      transform: translateY(0);
+        opacity: 1;
+        transform: translateY(0);
     }
-  }
+
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 500px) {
+    .form-container {
+        padding: 1rem;
+    }
+    .form-group input,
+    button {
+        width: 100%;
+    }
+    }
+}
