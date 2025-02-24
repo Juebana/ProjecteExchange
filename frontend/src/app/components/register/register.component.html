@@ -24,4 +24,5 @@
     <button type="submit" [disabled]="!isFormValid">Register</button>
   </form>
   <p>Already have an account? <a routerLink="/login">Log In</a></p>
+  <app-custom-alert [showAlert]="showAlert" [alertMessage]="alertMessage" (dismissed)="showAlert = false"></app-custom-alert>
 </div>
