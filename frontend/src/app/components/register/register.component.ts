@@ -32,8 +32,6 @@ export class RegisterComponent {
     this.user.password = this.user.password.trim();
     this.confirmPassword = this.confirmPassword.trim();
 
-    console.log('Password:', this.user.password, 'Confirm:', this.confirmPassword);
-
     let errorMessage = 'Please fix the following:';
     let hasErrors = false;
 
@@ -63,13 +61,11 @@ export class RegisterComponent {
 
     this.authService.register(this.user.username, this.user.password).subscribe({
       next: () => {
-        console.log('Registration successful.');
         this.alertMessage = 'Registration successful! You can now log in.';
         this.showAlert = true;
         this.registerSuccess = true;
       },
       error: (err) => {
-        console.error('Registration failed:', err);
         this.alertMessage = 'Registration failed. Please try again.';
         this.showAlert = true;
         this.registerSuccess = false;
