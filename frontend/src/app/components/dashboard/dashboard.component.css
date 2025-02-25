@@ -15,7 +15,9 @@
 
 main {
   padding-top: 50px;
+  height: calc(100vh - var(--nav-total-height));
   box-sizing: border-box;
+  overflow: hidden;
 }
 
 .dashboard-container {
@@ -24,6 +26,7 @@ main {
   flex-wrap: wrap;
   gap: 20px;
   padding: 20px;
+  height: calc(100vh - var(--nav-total-height));
   min-height: calc(100vh - var(--nav-height));
   width: 100%;
   box-sizing: border-box;
@@ -33,7 +36,7 @@ main {
   flex: 2;
   min-width: 300px;
   min-height: 300px;
-  height: 80vh; /* Ensures chart has height */
+  height: auto;
   background-color: #222;
   color: white;
   display: flex;
@@ -50,7 +53,6 @@ main {
   background-color: #1e1e1e;
   border-radius: 8px;
   overflow: hidden;
-  position: relative;
 }
 
 .buysell-component {
