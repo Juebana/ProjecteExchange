@@ -4,17 +4,19 @@ import { Router, RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { CustomAlertComponent } from '../custom-alert/custom-alert.component';
 import { User } from '../../models/user.model';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-register',
   standalone: true,
-  imports: [FormsModule, RouterModule, CustomAlertComponent],
+  imports: [FormsModule, RouterModule, CustomAlertComponent, CommonModule],
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.css'],
 })
 export class RegisterComponent {
   user: User = new User('', '', '');
-  confirmPassword: string = ''; // New variable for confirm password
+  confirmPassword: string = '';
+  passwordPattern = '(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).{8,}'; // Regex as string for pattern validator
 
   showAlert: boolean = false;
   alertMessage: string = '';
@@ -23,7 +25,6 @@ export class RegisterComponent {
   constructor(private authService: AuthService, private router: Router) {}
 
   get isFormValid(): boolean {
-    // Define password requirements: at least 8 chars, 1 uppercase, 1 lowercase, 1 number
     const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/;
     const isUsernameValid = this.user.username.trim() !== '';
     const isPasswordValid = passwordRegex.test(this.user.password);
