@@ -1,26 +1,116 @@
+:root {
+  --primary-color: #007bff;
+  --secondary-color: #f8f9fa;
+  --text-color: #212529;
+  --border-color: #ced4da;
+  --nav-height: 70px;
+  --nav-padding-top: 10px;
+  --nav-padding-bottom: 10px;
+  --nav-total-height: calc(var(--nav-height) + var(--nav-padding-top) + var(--nav-padding-bottom));
+  --extra-space: 20px;
+  --main-padding-top: calc(var(--nav-height) + var(--extra-space));
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+main {
+  padding-top: 50px;
+  box-sizing: border-box;
+}
+
 .dashboard-container {
-    display: flex;
-    gap: 20px;
-    padding: 20px;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 20px;
+  padding: 20px;
+  min-height: calc(100vh - var(--nav-height));
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.chart-component {
+  flex: 2;
+  min-width: 300px;
+  min-height: 300px;
+  height: 80vh; /* Ensures chart has height */
+  background-color: #222;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+}
+
+.trading-view-container {
+  width: 100%;
+  height: 100%;
+  min-height: 400px;
+  min-width: 0;
+  background-color: #1e1e1e;
+  border-radius: 8px;
+  overflow: hidden;
+  position: relative;
+}
+
+.buysell-component {
+  flex: 1;
+  min-width: 300px;
+  width: 320px;
+  min-height: 600px;
+  max-height: 80vh;
+  background-color: white;
+  color: var(--text-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  overflow-y: auto;
+}
+
+.login-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: var(--secondary-color);
+}
+
+.login-form {
+  background-color: white;
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 400px;
+}
+
+@media (max-width: 768px) {
+  .dashboard-container {
+    flex-direction: column;
+    padding: 10px;
+    min-height: auto;
   }
-  
-  .trading-view-placeholder {
-    flex: 2;
-    height: 400px;
-    background-color: #222;
-    color: white;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  .chart-component, .buysell-component {
+    flex: none;
+    width: 100%;
+    min-height: 300px;
   }
-  
-  .buy-sell-placeholder {
-    flex: 1;
-    height: 400px;
-    background-color: #333;
-    color: white;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  .trading-view-container {
+    min-height: 300px;
   }
-  
+  .buysell-component {
+    height: auto;
+  }
+}
+
+@media (max-width: 500px) {
+  .dashboard-container {
+    padding: 5px;
+  }
+  .chart-component, .buysell-component {
+    min-width: 100%;
+  }
+}

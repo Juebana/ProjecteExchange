@@ -78,7 +78,6 @@ export class BuySellComponent {
         console.log('Order created successfully.');
         this.alertMessage = 'Order successfully placed!';
         this.showAlert = true;
-        this.resetForm();
       },
       error: (err) => {
         console.error('Order creation failed:', err);
