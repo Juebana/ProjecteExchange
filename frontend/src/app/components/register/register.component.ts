@@ -14,6 +14,7 @@ import { User } from '../../models/user.model';
 })
 export class RegisterComponent {
   user: User = new User('', '', '');
+  confirmPassword: string = ''; // New variable for confirm password
 
   showAlert: boolean = false;
   alertMessage: string = '';
@@ -22,13 +23,29 @@ export class RegisterComponent {
   constructor(private authService: AuthService, private router: Router) {}
 
   get isFormValid(): boolean {
-    return this.user.username.trim() !== '' && this.user.password.trim() !== '';
+    // Define password requirements: at least 8 chars, 1 uppercase, 1 lowercase, 1 number
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/;
+    const isUsernameValid = this.user.username.trim() !== '';
+    const isPasswordValid = passwordRegex.test(this.user.password);
+    const doPasswordsMatch = this.user.password === this.confirmPassword;
+
+    return isUsernameValid && isPasswordValid && doPasswordsMatch;
   }
 
   onSubmit(): void {
     if (!this.isFormValid) {
-      console.warn('Username or password is missing.');
-      this.alertMessage = 'Please fill in both username and password.';
+      console.warn('Form is invalid.');
+      let errorMessage = 'Please fix the following:';
+      if (this.user.username.trim() === '') {
+        errorMessage += ' Username is required.';
+      }
+      if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/.test(this.user.password)) {
+        errorMessage += ' Password must be at least 8 characters, with an uppercase letter, lowercase letter, and number.';
+      }
+      if (this.user.password !== this.confirmPassword) {
+        errorMessage += ' Passwords do not match.';
+      }
+      this.alertMessage = errorMessage;
       this.showAlert = true;
       this.registerSuccess = false;
       return;

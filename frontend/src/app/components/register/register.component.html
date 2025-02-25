@@ -21,6 +21,16 @@
         placeholder="Enter your password"
       />
     </div>
+    <div class="form-group">
+      <label for="confirmPassword">Confirm Password</label>
+      <input
+        id="confirmPassword"
+        type="password"
+        [(ngModel)]="confirmPassword"
+        [ngModelOptions]="{ standalone: true }"
+        placeholder="Confirm your password"
+      />
+    </div>
     <button type="submit" [disabled]="!isFormValid">Register</button>
   </form>
   <p>Already have an account? <a routerLink="/login">Log In</a></p>
