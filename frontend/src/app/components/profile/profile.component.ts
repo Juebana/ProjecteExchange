@@ -3,12 +3,14 @@ import { User } from '../../models/user.model';
 import { UserDTO } from '../../models/user.dto';
 import { Fund } from '../../models/fund.model';
 import { FundService } from '../../services/FundService/fund.service';
-import { NgForm } from '@angular/forms';
+import { FormsModule, NgForm } from '@angular/forms';
+import { CommonModule, DecimalPipe } from '@angular/common';
 
 @Component({
   selector: 'app-profile',
   standalone: true,
-  imports: [],
+  imports: [FormsModule, CommonModule],
+  providers: [DecimalPipe],
   templateUrl: './profile.component.html',
   styleUrl: './profile.component.css'
 })
