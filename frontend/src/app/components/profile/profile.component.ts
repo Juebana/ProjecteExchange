@@ -6,11 +6,12 @@ import { FundService } from '../../services/FundService/fund.service';
 import { FormsModule, NgForm } from '@angular/forms';
 import { CommonModule, DecimalPipe } from '@angular/common';
 import { CustomAlertComponent } from '../custom-alert/custom-alert.component';
+import { RouterModule } from '@angular/router'; // Add this
 
 @Component({
   selector: 'app-profile',
   standalone: true,
-  imports: [FormsModule, CommonModule, CustomAlertComponent],
+  imports: [FormsModule, CommonModule, CustomAlertComponent, RouterModule], // Add RouterModule
   providers: [DecimalPipe],
   templateUrl: './profile.component.html',
   styleUrl: './profile.component.css'
@@ -21,7 +22,7 @@ export class ProfileComponent {
   rechargeAmount: number = 0;
   showAlert: boolean = false;
   alertMessage: string = '';
-  
+
   constructor(private fundService: FundService) {}
 
   ngOnInit(): void {
@@ -38,11 +39,11 @@ export class ProfileComponent {
       this.fetchBalance();
     }
   }
-  
+
   fetchBalance(): void {
     if (!this.user) return;
     this.fundService.getBalance(this.user.id).subscribe({
-      next: (response: { balance: number; }) => {
+      next: (response: { balance: number }) => {
         this.fund.balance = response.balance;
       },
       error: (err: any) => {
