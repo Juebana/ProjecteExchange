@@ -3,6 +3,7 @@ import { User } from '../../models/user.model';
 import { UserDTO } from '../../models/user.dto';
 import { Fund } from '../../models/fund.model';
 import { FundService } from '../../services/FundService/fund.service';
+import { NgForm } from '@angular/forms';
 
 @Component({
   selector: 'app-profile',
@@ -45,6 +46,24 @@ export class ProfileComponent {
         console.error('Error fetching balance:', err);
         this.showAlert = true;
         this.alertMessage = 'Failed to load balance.';
+      }
+    });
+  }
+
+  onRecharge(form: NgForm): void {
+    if (form.invalid || !this.user) return;
+    this.fundService.rechargeFunds(this.user.id, this.rechargeAmount).subscribe({
+      next: (response) => {
+        this.fund.balance = response.newBalance;
+        this.alertMessage = response.message;
+        this.showAlert = true;
+        this.rechargeAmount = 0;
+        form.resetForm();
+      },
+      error: (err) => {
+        console.error('Error recharging funds:', err);
+        this.alertMessage = 'Failed to recharge funds.';
+        this.showAlert = true;
       }
     });
   }
