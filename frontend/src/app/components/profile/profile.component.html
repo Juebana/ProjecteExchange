@@ -26,6 +26,8 @@
         <button type="submit" [disabled]="rechargeForm.invalid">Recharge</button>
       </form>
     </div>
+
+    <button class="back-button" routerLink="/dashboard">Back to Dashboard</button>
   
     <app-custom-alert [showAlert]="showAlert" [alertMessage]="alertMessage" (dismissed)="showAlert = false"></app-custom-alert>
   </div>
