@@ -19,7 +19,6 @@ describe('ProfileComponent', () => {
 
     fixture = TestBed.createComponent(ProfileComponent);
     component = fixture.componentInstance;
-    // Remove fixture.detectChanges() from here
   });
 
   afterEach(() => {
