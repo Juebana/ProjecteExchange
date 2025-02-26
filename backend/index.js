@@ -35,7 +35,7 @@ app.use((req, res, next) => {
 
 app.use('/auth', authRoutes);
 app.use('/order', orderRoutes);
-app.use('/fund', fundRoutes); 
+app.use('/fund', fundRoutes);
 
 app.listen(PORT, () => {
     console.log(`Server is running on http://localhost:${PORT}`);

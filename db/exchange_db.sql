@@ -50,18 +50,6 @@ CREATE TABLE `users` (
   `password` varchar(255) NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Volcado de datos para la tabla `users`
---
-
-INSERT INTO `users` (`id`, `username`, `password`, `created_at`) VALUES
-('1bdb9ebc-ed57-11ef-924d-74d4dd089746', 'admin', '$2b$10$JLqfkujOsxSoR6l8604Cp./SnQfDUgcfKi6jxdiKrLWHEYTjxBGye', '2025-02-17 17:46:25');
-
---
--- Índices para tablas volcadas
---
-
 --
 -- Indices de la tabla `orders`
 --
