@@ -63,4 +63,12 @@ describe('ProfileComponent', () => {
     expect(component.showAlert).toBeTrue();
     expect(component.alertMessage).toBe('Success');
   });
+
+  it('should dismiss alert', () => {
+    const fixture = TestBed.createComponent(ProfileComponent);
+    const component = fixture.componentInstance;
+    component.showAlert = true;
+    component.onAlertDismissed();
+    expect(component.showAlert).toBeFalse();
+  });
 });
