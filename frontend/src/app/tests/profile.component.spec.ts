@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ProfileComponent } from './profile.component';
+import { ProfileComponent } from '../components/profile/profile.component';
 
 describe('ProfileComponent', () => {
   let component: ProfileComponent;
@@ -19,5 +19,15 @@ describe('ProfileComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should retrieve user from local storage', () => {
+    const mockUser = { id: '123', name: 'Test User' };
+    localStorage.setItem('user', JSON.stringify(mockUser));
+    const fixture = TestBed.createComponent(ProfileComponent);
+    const component = fixture.componentInstance;
+    component.ngOnInit();
+    expect(component.user).toBeDefined();
+    expect(component.user.id).toBe('123');
   });
 });
