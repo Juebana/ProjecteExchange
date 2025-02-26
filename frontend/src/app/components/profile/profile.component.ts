@@ -67,4 +67,8 @@ export class ProfileComponent {
       }
     });
   }
+
+  onAlertDismissed(): void {
+    this.showAlert = false;
+  }
 }
