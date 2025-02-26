@@ -5,11 +5,15 @@ import { of } from 'rxjs';
 import { provideHttpClient } from '@angular/common/http';
 import { provideRouter } from '@angular/router';
 import { DashboardComponent } from '../components/dashboard/dashboard.component';
+import { User } from '../models/user.model';
 
 
 describe('ProfileComponent', () => {
   let component: ProfileComponent;
   let fixture: ComponentFixture<ProfileComponent>;
+
+  const mockUser = new User('123', 'Test User', 'Test Password', 'test-token');
+
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -31,27 +35,24 @@ describe('ProfileComponent', () => {
   });
 
   it('should retrieve user from local storage', () => {
-    const mockUser = { id: '123', name: 'Test User' };
     localStorage.setItem('user', JSON.stringify(mockUser));
-    fixture.detectChanges(); // Triggers ngOnInit with localStorage set
+    fixture.detectChanges();
     expect(component.user).toBeDefined();
-    expect(component.user?.id).toBe('123');
+    expect(component.user?.id).toBe('123'); // Now matches the mockUser's id
   });
 
   it('should fetch balance if user is present', () => {
-    const mockUser = { id: '123', name: 'Test User' };
     localStorage.setItem('user', JSON.stringify(mockUser));
     const fundService = TestBed.inject(FundService);
     spyOn(fundService, 'getBalance').and.returnValue(of({ balance: 100 }));
-    fixture.detectChanges(); // Triggers ngOnInit and fetchBalance
+    fixture.detectChanges();
     expect(fundService.getBalance).toHaveBeenCalledWith('123');
     expect(component.fund.balance).toBe(100);
   });
 
   it('should recharge funds correctly', () => {
-    const mockUser = { id: '123', name: 'Test User' };
     localStorage.setItem('user', JSON.stringify(mockUser));
-    fixture.detectChanges(); // Initialize component with user
+    fixture.detectChanges();
     component.rechargeAmount = 50;
     const fundService = TestBed.inject(FundService);
     spyOn(fundService, 'rechargeFunds').and.returnValue(of({ message: 'Success', newBalance: 150 }));
@@ -63,7 +64,7 @@ describe('ProfileComponent', () => {
     expect(component.alertMessage).toBe('Success');
     expect(mockForm.resetForm).toHaveBeenCalled();
   });
-
+  
   it('should dismiss alert', () => {
     component.showAlert = true;
     component.onAlertDismissed();
