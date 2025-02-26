@@ -28,6 +28,6 @@ describe('ProfileComponent', () => {
     const component = fixture.componentInstance;
     component.ngOnInit();
     expect(component.user).toBeDefined();
-    expect(component.user.id).toBe('123');
+    expect(component.user?.id).toBe('123');
   });
 });
