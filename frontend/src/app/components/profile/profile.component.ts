@@ -5,11 +5,12 @@ import { Fund } from '../../models/fund.model';
 import { FundService } from '../../services/FundService/fund.service';
 import { FormsModule, NgForm } from '@angular/forms';
 import { CommonModule, DecimalPipe } from '@angular/common';
+import { CustomAlertComponent } from '../custom-alert/custom-alert.component';
 
 @Component({
   selector: 'app-profile',
   standalone: true,
-  imports: [FormsModule, CommonModule],
+  imports: [FormsModule, CommonModule, CustomAlertComponent],
   providers: [DecimalPipe],
   templateUrl: './profile.component.html',
   styleUrl: './profile.component.css'

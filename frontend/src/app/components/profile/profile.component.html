@@ -27,8 +27,5 @@
       </form>
     </div>
   
-    <div *ngIf="showAlert" class="alert">
-      {{ alertMessage }}
-      <button (click)="onAlertDismissed()">Close</button>
-    </div>
+    <app-custom-alert [showAlert]="showAlert" [alertMessage]="alertMessage" (dismissed)="showAlert = false"></app-custom-alert>
   </div>

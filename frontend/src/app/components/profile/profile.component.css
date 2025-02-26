@@ -40,19 +40,3 @@
     cursor: not-allowed;
   }
   
-  .error-message {
-    color: red;
-    font-size: 0.9em;
-  }
-  
-  .alert {
-    padding: 10px;
-    background-color: #f8d7da;
-    color: #721c24;
-    margin-top: 20px;
-  }
-  
-  .alert button {
-    margin-left: 10px;
-    background-color: #721c24;
-  }
