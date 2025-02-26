@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { User } from '../../models/user.model';
 import { UserDTO } from '../../models/user.dto';
+import { Fund } from '../../models/fund.model';
 
 @Component({
   selector: 'app-profile',
@@ -11,7 +12,8 @@ import { UserDTO } from '../../models/user.dto';
 })
 export class ProfileComponent {
   user: User | undefined;
-  
+  fund: Fund = new Fund();
+
   ngOnInit(): void {
     const userData = localStorage.getItem('user');
     if (userData) {
