@@ -3,6 +3,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ProfileComponent } from '../components/profile/profile.component';
 import { FundService } from '../services/FundService/fund.service';
 import { of } from 'rxjs';
+import { provideHttpClient } from '@angular/common/http';
 
 describe('ProfileComponent', () => {
   let component: ProfileComponent;
@@ -10,7 +11,8 @@ describe('ProfileComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ProfileComponent]
+      imports: [ProfileComponent],
+      providers: [FundService, provideHttpClient()]
     })
     .compileComponents();
 
