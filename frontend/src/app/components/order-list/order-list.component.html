@@ -1,1 +1,80 @@
-<p>order-list works!</p>
+<div class="tabs">
+    <button [class.active]="activeTab === 'active'" (click)="activeTab = 'active'; fetchActiveOrders()">Active Orders</button>
+    <button [class.active]="activeTab === 'history'" (click)="activeTab = 'history'; fetchOrderHistory()">Order History</button>
+  </div>
+  
+  <div *ngIf="activeTab === 'active'" class="active-orders">
+    <h2>Active Orders</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Symbol</th>
+          <th>Side</th>
+          <th>Type</th>
+          <th>Price</th>
+          <th>Amount</th>
+          <th>PNL</th>
+          <th>Created At</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let order of activeOrders">
+          <td>BTC/USDC</td>
+          <td>{{ order.tradeSide }}</td>
+          <td>{{ order.tradeType }}<span *ngIf="order.status === 'pending'"> (Pending)</span></td>
+          <td>
+            <ng-container *ngIf="order.status === 'pending'">{{ order.limitPrice }}</ng-container>
+            <ng-container *ngIf="order.status === 'executed'">{{ order.executionPrice }}</ng-container>
+          </td>
+          <td>{{ order.amount }}</td>
+          <td>
+            <ng-container *ngIf="order.status === 'executed'">
+              {{ calculatePNL(order) | number:'1.2-2' }}
+            </ng-container>
+          </td>
+          <td>{{ order.createdAt | date:'short' }}</td>
+          <td>
+            <button *ngIf="order.status === 'executed'" (click)="closeOrder(order)">Close</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  
+  <div *ngIf="activeTab === 'history'" class="order-history">
+    <h2>Order History</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Symbol</th>
+          <th>Side</th>
+          <th>Type</th>
+          <th>Price</th>
+          <th>Amount</th>
+          <th>PNL</th>
+          <th>Created At</th>
+          <th>Closed At</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let order of historyOrders">
+          <td>BTC/USDC</td>
+          <td>{{ order.tradeSide }}</td>
+          <td>{{ order.tradeType }}</td>
+          <td>{{ order.price }}</td>
+          <td>{{ order.amount }}</td>
+          <td>{{ order.pnl | number:'1.2-2' }}</td>
+          <td>{{ order.created_at | date:'short' }}</td>
+          <td>{{ order.closed_at | date:'short' }}</td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="pagination">
+      <button [disabled]="currentPage === 1" (click)="currentPage = currentPage - 1; fetchOrderHistory()">Previous</button>
+      <span>Page {{ currentPage }} of {{ totalPages }}</span>
+      <button [disabled]="currentPage === totalPages" (click)="currentPage = currentPage + 1; fetchOrderHistory()">Next</button>
+    </div>
+  </div>
+  
+  <app-custom-alert [showAlert]="showAlert" [alertMessage]="alertMessage" (dismissed)="dismissAlert()"></app-custom-alert>
