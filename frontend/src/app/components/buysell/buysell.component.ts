@@ -19,7 +19,7 @@ import { CustomAlertComponent } from '../custom-alert/custom-alert.component';
   styleUrls: ['./buysell.component.css']
 })
 export class BuySellComponent implements OnInit {
-  order: Order = Order.createOrder('', '', 'buy', 'market', null, 0, 'usdc');
+  order: Order = Order.createOrder('', '', 'buy', 'market', null, null, null, 0, 'usdc', 'pending');
   acceptedTerms: boolean = false;
   showAlert: boolean = false;
   alertMessage: string = '';
@@ -131,7 +131,7 @@ export class BuySellComponent implements OnInit {
   }
 
   resetForm(): void {
-    this.order = Order.createOrder('', '', 'buy', 'market', null, 0, 'usdc');
+    this.order = Order.createOrder('', '', 'buy', 'market', null, null, null, 0, 'usdc', 'pending');
     this.acceptedTerms = false;
     this.alertMessage = 'Form reset!';
     this.showAlert = true;
