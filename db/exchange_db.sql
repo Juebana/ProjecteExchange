@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 21-02-2025 a las 15:22:17
+-- Tiempo de generación: 27-02-2025 a las 15:19:25
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -20,6 +20,18 @@ SET time_zone = "+00:00";
 --
 -- Base de datos: `exchange_db`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `funds`
+--
+
+CREATE TABLE `funds` (
+  `id` char(36) NOT NULL DEFAULT uuid(),
+  `user_id` char(36) NOT NULL,
+  `balance` decimal(15,2) DEFAULT 0.00
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -50,11 +62,17 @@ CREATE TABLE `users` (
   `password` varchar(255) NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
 --
--- Indices de la tabla `orders`
+-- Índices para tablas volcadas
 --
-ALTER TABLE `orders`
-  ADD PRIMARY KEY (`id`);
+
+--
+-- Indices de la tabla `funds`
+--
+ALTER TABLE `funds`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `user_id` (`user_id`);
 
 --
 -- Indices de la tabla `users`
