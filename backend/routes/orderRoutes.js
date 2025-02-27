@@ -116,9 +116,22 @@ router.post('/closeOrder', (req, res) => {
     const executionPrice = order.execution_price;
     const amount = order.amount;
     const tradeSide = order.tradeSide;
-    let pnl = tradeSide === 'buy'
-      ? amount * (currentPrice / executionPrice - 1)
-      : amount * (1 - currentPrice / executionPrice);
+
+    // Calculate quantity (e.g., BTC)
+    const quantity = amount / executionPrice;
+
+    // Calculate balance adjustment
+    let balanceAdjustment;
+    if (tradeSide === 'buy') {
+      balanceAdjustment = quantity * currentPrice; // Proceeds from selling the asset
+    } else { // sell
+      balanceAdjustment = - (quantity * currentPrice); // Cost to buy back the asset
+    }
+
+    // Calculate PNL for history
+    const pnl = tradeSide === 'buy'
+      ? balanceAdjustment - amount // Profit from buy: proceeds - initial amount
+      : amount + balanceAdjustment; // Profit from sell: initial proceeds - buyback cost
 
     const historyQuery = 'INSERT INTO order_history (id, userId, tradeSide, tradeType, price, amount, currency, created_at, closed_at, pnl) VALUES (?, ?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP(), ?)';
     const historyValues = [order.id, order.userId, order.tradeSide, order.tradeType, order.limit_price, order.amount, order.currency, order.created_at, pnl];
@@ -135,7 +148,7 @@ router.post('/closeOrder', (req, res) => {
           return res.status(500).json({ message: 'Server error' });
         }
 
-        db.query('UPDATE funds SET balance = balance + ? WHERE user_id = ?', [pnl, userId], (err) => {
+        db.query('UPDATE funds SET balance = balance + ? WHERE user_id = ?', [balanceAdjustment, userId], (err) => {
           if (err) {
             console.error('Error updating balance:', err);
             return res.status(500).json({ message: 'Server error' });

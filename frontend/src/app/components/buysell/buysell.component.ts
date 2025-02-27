@@ -110,20 +110,33 @@ export class BuySellComponent implements OnInit {
         this.alertMessage = 'Order successfully placed!';
         this.showAlert = true;
         this.orderSuccess = true;
-        this.fundService.subtractFunds(this.user!.id, this.order.amount).subscribe({
-          next: (response) => {
-            this.fund.balance = response.newBalance;
-          },
-          error: (err) => {
-            console.error('Error subtracting funds:', err);
-            this.alertMessage = 'Order placed, but failed to update balance.';
-            this.showAlert = true;
-          }
-        });
+  
+        if (this.order.tradeSide === 'buy') {
+          this.fundService.subtractFunds(this.user!.id, this.order.amount).subscribe({
+            next: (response) => {
+              this.fund.balance = response.newBalance;
+            },
+            error: (err) => {
+              console.error('Error subtracting funds:', err);
+              this.alertMessage = 'Order placed, but failed to update balance.';
+              this.showAlert = true;
+            }
+          });
+        } else if (this.order.tradeSide === 'sell') {
+          this.fundService.rechargeFunds(this.user!.id, this.order.amount).subscribe({
+            next: (response) => {
+              this.fund.balance = response.newBalance;
+            },
+            error: (err) => {
+              console.error('Error adding funds:', err);
+              this.alertMessage = 'Order placed, but failed to update balance.';
+              this.showAlert = true;
+            }
+          });
+        }
       },
       error: (err) => {
         console.error('Order creation failed:', err);
-        console.log('Error details:', err.status, err.error);
         this.alertMessage = 'Failed to place order. Please try again.';
         this.showAlert = true;
       }
