@@ -123,7 +123,7 @@ export class BuySellComponent implements OnInit {
             }
           });
         } else if (this.order.tradeSide === 'sell') {
-          this.fundService.rechargeFunds(this.user!.id, this.order.amount).subscribe({
+          this.fundService.subtractFunds(this.user!.id, this.order.amount).subscribe({
             next: (response) => {
               this.fund.balance = response.newBalance;
             },
