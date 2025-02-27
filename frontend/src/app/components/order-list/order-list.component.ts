@@ -1,7 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { OrderService } from '../../services/OrderService/order.service';
 import { PriceService } from '../../services/PriceService/price.service';
-import { AuthService } from '../../services/AuthService/auth.service';
 import { User } from '../../models/user.model';
 import { Order } from '../../models/order.model';
 import { UserDTO } from '../../models/user.dto';
