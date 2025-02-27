@@ -72,16 +72,17 @@ export class BuySellComponent implements OnInit {
       this.showAlert = true;
       return;
     }
-
+  
     if (!this.user) {
       this.alertMessage = 'User not logged in.';
       this.showAlert = true;
       return;
     }
-
+  
     if (this.order.tradeType === 'market') {
       try {
-        this.order.price = await firstValueFrom(this.getMarketPrice());
+        const currentPrice = await firstValueFrom(this.getMarketPrice());
+        this.order.executionPrice = currentPrice;
       } catch (error) {
         console.error('Failed to fetch market price:', error);
         this.alertMessage = 'Failed to get market price. Please try again.';
@@ -94,23 +95,21 @@ export class BuySellComponent implements OnInit {
         this.showAlert = true;
         return;
       }
+      this.order.limitPrice = this.order.price;
     }
-
-    // Check balance for ALL orders (buy or sell)
+  
     if (this.order.amount > this.fund.balance) {
       this.alertMessage = 'Insufficient balance to place this order.';
       this.showAlert = true;
       return;
     }
-
+  
     this.orderService.createOrder(this.order).subscribe({
       next: () => {
         console.log('Order created successfully.');
         this.alertMessage = 'Order successfully placed!';
         this.showAlert = true;
         this.orderSuccess = true;
-
-        // Subtract funds for ALL orders (buy or sell)
         this.fundService.subtractFunds(this.user!.id, this.order.amount).subscribe({
           next: (response) => {
             this.fund.balance = response.newBalance;
@@ -124,6 +123,7 @@ export class BuySellComponent implements OnInit {
       },
       error: (err) => {
         console.error('Order creation failed:', err);
+        console.log('Error details:', err.status, err.error);
         this.alertMessage = 'Failed to place order. Please try again.';
         this.showAlert = true;
       }
