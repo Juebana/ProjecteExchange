@@ -1,13 +1,11 @@
 <div class="buy-sell-container">
-  <!-- Balance Display -->
+  <!-- Existing code unchanged -->
   <div class="balance-section">
     <h3>Your Balance: ${{ fund.balance | number:'1.2-2' }}</h3>
   </div>
 
-  <!-- Instructions -->
   <p class="instructions">Fill out the form below to place your order to buy or sell the coin. The currency you use to buy or sell are in USDC (Basically dolars).</p>
 
-  <!-- Buy/Sell toggles -->
   <div class="buy-sell-toggle">
     <label for="buyRadio">
       <input
@@ -33,7 +31,6 @@
     </label>
   </div>
 
-  <!-- Market/Limit toggles -->
   <div class="market-limit-toggle">
     <label for="marketRadio">
       <input
@@ -59,7 +56,6 @@
     </label>
   </div>
 
-  <!-- Price input: Only visible if order.tradeType is 'limit' -->
   <div *ngIf="order.tradeType === 'limit'" class="input-group">
     <label for="priceInput">Price (USDC)</label>
     <input
@@ -71,7 +67,6 @@
     />
   </div>
 
-  <!-- Amount input and Currency select -->
   <div class="input-group">
     <label for="amountInput">Amount</label>
     <input
@@ -87,7 +82,6 @@
     </select>
   </div>
 
-  <!-- Checkbox for Terms and Conditions -->
   <div class="checkbox-container">
     <label for="termsCheckbox">
       <input
@@ -100,14 +94,12 @@
     </label>
   </div>
 
-  <!-- Inline error message if terms not accepted -->
   <div class="error-message" *ngIf="!acceptedTerms">
     You must accept the terms and conditions to place an order.
   </div>
 
-  <!-- Action buttons -->
   <div class="button-group">
-    <button id="openTradeBtn" (click)="openTrade()" tabindex="0">
+    <button id="openTradeBtn" (click)="openTrade()" [disabled]="isProcessing" tabindex="0">
       {{ order.tradeSide === 'buy' ? 'Open Buy' : 'Open Sell' }}
     </button>
     <button id="resetBtn" (click)="resetForm()" tabindex="0">

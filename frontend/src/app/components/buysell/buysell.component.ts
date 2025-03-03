@@ -11,6 +11,8 @@ import { Fund } from '../../models/fund.model';
 import { firstValueFrom, Observable } from 'rxjs';
 import { CustomAlertComponent } from '../custom-alert/custom-alert.component';
 import { RouterModule, Router } from '@angular/router';
+import { OrderNotificationService } from '../../services/OrderNotification/order-notification.service';
+
 
 @Component({
   selector: 'app-buysell',
@@ -25,6 +27,7 @@ export class BuySellComponent implements OnInit {
   showAlert: boolean = false;
   alertMessage: string = '';
   orderSuccess: boolean = false;
+  isProcessing: boolean = false; 
 
   user: User | null = null;
   fund: Fund = new Fund();
@@ -33,10 +36,12 @@ export class BuySellComponent implements OnInit {
     private orderService: OrderService,
     private priceService: PriceService,
     private fundService: FundService,
-    private router: Router
+    private router: Router,
+    private orderNotificationService: OrderNotificationService 
   ) {}
 
   ngOnInit(): void {
+
     const storedUser = localStorage.getItem('user');
     if (storedUser) {
       try {
@@ -75,75 +80,57 @@ export class BuySellComponent implements OnInit {
       this.showAlert = true;
       return;
     }
-  
+
     if (!this.user) {
       this.alertMessage = 'User not logged in.';
       this.showAlert = true;
       return;
     }
-  
-    if (this.order.tradeType === 'market') {
-      try {
+
+    this.isProcessing = true; 
+
+    try {
+      if (this.order.tradeType === 'market') {
         const currentPrice = await firstValueFrom(this.getMarketPrice());
         this.order.executionPrice = currentPrice;
-      } catch (error) {
-        console.error('Failed to fetch market price:', error);
-        this.alertMessage = 'Failed to get market price. Please try again.';
-        this.showAlert = true;
-        return;
-      }
-    } else if (this.order.tradeType === 'limit') {
-      if (this.order.price == null || this.order.price <= 0) {
-        this.alertMessage = 'Please enter a valid price for limit order.';
-        this.showAlert = true;
-        return;
-      }
-      this.order.limitPrice = this.order.price;
-    }
-  
-    if (this.order.amount > this.fund.balance) {
-      this.alertMessage = 'Insufficient balance to place this order.';
-      this.showAlert = true;
-      return;
-    }
-  
-    this.orderService.createOrder(this.order).subscribe({
-      next: () => {
-        console.log('Order created successfully.');
-        this.alertMessage = 'Order successfully placed!';
-        this.showAlert = true;
-        this.orderSuccess = true;
-  
-        if (this.order.tradeSide === 'buy') {
-          this.fundService.subtractFunds(this.user!.id, this.order.amount).subscribe({
-            next: (response) => {
-              this.fund.balance = response.newBalance;
-            },
-            error: (err) => {
-              console.error('Error subtracting funds:', err);
-              this.alertMessage = 'Order placed, but failed to update balance.';
-              this.showAlert = true;
-            }
-          });
-        } else if (this.order.tradeSide === 'sell') {
-          this.fundService.subtractFunds(this.user!.id, this.order.amount).subscribe({
-            next: (response) => {
-              this.fund.balance = response.newBalance;
-            },
-            error: (err) => {
-              console.error('Error adding funds:', err);
-              this.alertMessage = 'Order placed, but failed to update balance.';
-              this.showAlert = true;
-            }
-          });
+      } else if (this.order.tradeType === 'limit') {
+        if (this.order.price == null || this.order.price <= 0) {
+          this.alertMessage = 'Please enter a valid price for limit order.';
+          this.showAlert = true;
+          return;
         }
-      },
-      error: (err) => {
-        console.error('Order creation failed:', err);
-        this.alertMessage = 'Failed to place order. Please try again.';
+        this.order.limitPrice = this.order.price;
+      }
+
+      if (this.order.amount > this.fund.balance) {
+        this.alertMessage = 'Insufficient balance to place this order.';
+        this.showAlert = true;
+        return;
+      }
+
+      await firstValueFrom(this.orderService.createOrder(this.order));
+      console.log('Order created successfully.');
+      this.alertMessage = 'Order successfully placed!';
+      this.showAlert = true;
+      this.orderSuccess = true;
+
+      try {
+        const response = await firstValueFrom(this.fundService.subtractFunds(this.user!.id, this.order.amount));
+        this.fund.balance = response.newBalance;
+      } catch (fundErr) {
+        console.error('Fund operation failed:', fundErr);
+        this.alertMessage = 'Order placed, but failed to update balance.';
         this.showAlert = true;
       }
-    });
+
+      this.orderNotificationService.notifyOrderPlaced();
+    } catch (err) {
+      console.error('Order creation failed:', err);
+      this.alertMessage = 'Failed to place order. Please try again.';
+      this.showAlert = true;
+    } finally {
+      this.isProcessing = false; 
+    }
   }
 
   resetForm(): void {

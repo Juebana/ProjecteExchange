@@ -9,6 +9,8 @@ import { switchMap } from 'rxjs/operators';
 import { HttpHeaders } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { CustomAlertComponent } from '../custom-alert/custom-alert.component';
+import { OrderNotificationService } from '../../services/OrderNotification/order-notification.service';
+
 
 @Component({
   selector: 'app-order-list',
@@ -24,6 +26,7 @@ export class OrderListComponent implements OnInit, OnDestroy {
   historyOrders: any[] = [];
   currentPrice: number | null = null;
   priceSubscription: Subscription | null = null;
+  orderNotificationSubscription: Subscription | null = null; 
   currentPage: number = 1;
   totalPages: number = 1;
   showAlert: boolean = false;
@@ -31,7 +34,8 @@ export class OrderListComponent implements OnInit, OnDestroy {
 
   constructor(
     private orderService: OrderService,
-    private priceService: PriceService
+    private priceService: PriceService,
+    private orderNotificationService: OrderNotificationService 
   ) {}
 
   ngOnInit(): void {
@@ -41,6 +45,9 @@ export class OrderListComponent implements OnInit, OnDestroy {
       this.user = UserDTO.fromJSONToUser(parsedUser);
       this.fetchActiveOrders();
       this.startPriceSubscription();
+      this.orderNotificationSubscription = this.orderNotificationService.orderPlaced$.subscribe(() => {
+        this.fetchActiveOrders();
+      });
     }
   }
 
@@ -48,9 +55,13 @@ export class OrderListComponent implements OnInit, OnDestroy {
     if (this.priceSubscription) {
       this.priceSubscription.unsubscribe();
     }
+    if (this.orderNotificationSubscription) {
+      this.orderNotificationSubscription.unsubscribe();
+    }
   }
 
   fetchActiveOrders(): void {
+
     if (this.user) {
       this.orderService.getActiveOrders(this.user.id).subscribe(orders => {
         this.activeOrders = orders;
@@ -70,7 +81,7 @@ export class OrderListComponent implements OnInit, OnDestroy {
 
   checkPendingOrders(): void {
     if (this.currentPrice === null || !this.user) return;
-    const currentPrice = this.currentPrice; // TypeScript infers this as number
+    const currentPrice = this.currentPrice;
     const headers = new HttpHeaders({ 'user-id': this.user.id });
     this.activeOrders.filter(o => o.status === 'pending').forEach(order => {
       const limitPrice = order.limitPrice;
@@ -98,7 +109,7 @@ export class OrderListComponent implements OnInit, OnDestroy {
 
   checkAutoCloseOrders(): void {
     if (this.currentPrice === null || !this.user) return;
-    const currentPrice = this.currentPrice; // TypeScript infers this as number
+    const currentPrice = this.currentPrice;
     const headers = new HttpHeaders({ 'user-id': this.user.id });
     this.activeOrders.filter(o => o.status === 'executed').forEach(order => {
       const pnl = this.calculatePNL(order);
@@ -114,7 +125,7 @@ export class OrderListComponent implements OnInit, OnDestroy {
 
   closeOrder(order: Order): void {
     if (this.currentPrice === null || !this.user) return;
-    const currentPrice = this.currentPrice; // TypeScript infers this as number
+    const currentPrice = this.currentPrice;
     const headers = new HttpHeaders({ 'user-id': this.user.id });
     this.orderService.closeOrder(order.id, currentPrice, headers).subscribe(() => {
       this.fetchActiveOrders();
