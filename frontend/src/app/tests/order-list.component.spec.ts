@@ -224,7 +224,7 @@ describe('OrderListComponent', () => {
     expect(pnl).toBeCloseTo(100 * (55000 / 50000 - 1), 2); // 10% profit
   });
 
-// **Pending Orders Tests**
+  // **Pending Orders Tests**
   it('should execute pending buy order when current price <= limit price', fakeAsync(() => {
     component.currentPrice = 54000;
     
@@ -256,31 +256,31 @@ describe('OrderListComponent', () => {
     expect(pnl).toBe(0);
   });
 
-// **Auto-Close Orders Tests**
-it('should auto-close order when PNL <= -amount', fakeAsync(() => {
-  // Create a vulnerable order
-  const vulnerableOrder = Order.createOrder(
-    '1',
-    '123',
-    'buy',
-    'market',
-    null,
-    null,
-    100, // Execution price
-    100, // Amount
-    'usdc',
-    'executed',
-    '2023-01-01T00:00:00Z'
-  );
-  
-  component.activeOrders = [vulnerableOrder];
-  component.currentPrice = 0; // Price drops to 0 for 100% loss
-  
-  spyOn(orderService, 'closeOrder').and.callThrough();
-  component.checkAutoCloseOrders();
-  
-  expect(orderService.closeOrder).toHaveBeenCalledWith('1', 0, jasmine.any(HttpHeaders));
-}));
+  // **Auto-Close Orders Tests**
+  it('should auto-close order when PNL <= -amount', fakeAsync(() => {
+    // Create a vulnerable order
+    const vulnerableOrder = Order.createOrder(
+      '1',
+      '123',
+      'buy',
+      'market',
+      null,
+      null,
+      100, // Execution price
+      100, // Amount
+      'usdc',
+      'executed',
+      '2023-01-01T00:00:00Z'
+    );
+    
+    component.activeOrders = [vulnerableOrder];
+    component.currentPrice = 0; // Price drops to 0 for 100% loss
+    
+    spyOn(orderService, 'closeOrder').and.callThrough();
+    component.checkAutoCloseOrders();
+    
+    expect(orderService.closeOrder).toHaveBeenCalledWith('1', 0, jasmine.any(HttpHeaders));
+  }));
 
   // **User Interaction Tests**
   it('should close an order and show alert when closeOrder is called', () => {
