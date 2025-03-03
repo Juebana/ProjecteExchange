@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { OrderService } from '../../services/OrderService/order.service';
@@ -8,11 +8,10 @@ import { UserDTO } from '../../models/user.dto';
 import { PriceService } from '../../services/PriceService/price.service';
 import { FundService } from '../../services/FundService/fund.service';
 import { Fund } from '../../models/fund.model';
-import { firstValueFrom, Observable } from 'rxjs';
+import { firstValueFrom, Observable, Subscription } from 'rxjs';
 import { CustomAlertComponent } from '../custom-alert/custom-alert.component';
 import { RouterModule, Router } from '@angular/router';
 import { OrderNotificationService } from '../../services/OrderNotification/order-notification.service';
-
 
 @Component({
   selector: 'app-buysell',
@@ -21,42 +20,36 @@ import { OrderNotificationService } from '../../services/OrderNotification/order
   templateUrl: './buysell.component.html',
   styleUrls: ['./buysell.component.css']
 })
-export class BuySellComponent implements OnInit {
+export class BuySellComponent implements OnInit, OnDestroy {
   order: Order = Order.createOrder('', '', 'buy', 'market', null, null, null, 0, 'usdc', 'pending');
   acceptedTerms: boolean = false;
   showAlert: boolean = false;
   alertMessage: string = '';
   orderSuccess: boolean = false;
-  isProcessing: boolean = false; 
+  isProcessing: boolean = false;
 
   user: User | null = null;
   fund: Fund = new Fund();
+  private balanceUpdateSubscription: Subscription | null = null;
 
   constructor(
     private orderService: OrderService,
     private priceService: PriceService,
     private fundService: FundService,
     private router: Router,
-    private orderNotificationService: OrderNotificationService 
+    private orderNotificationService: OrderNotificationService
   ) {}
 
   ngOnInit(): void {
-
     const storedUser = localStorage.getItem('user');
     if (storedUser) {
       try {
         const userJson = JSON.parse(storedUser);
         this.user = UserDTO.fromJSONToUser(userJson);
         this.order.userId = this.user.id;
-        this.fundService.getBalance(this.user.id).subscribe({
-          next: (response) => {
-            this.fund.balance = response.balance;
-          },
-          error: (err) => {
-            console.error('Error fetching balance:', err);
-            this.alertMessage = 'Failed to load balance.';
-            this.showAlert = true;
-          }
+        this.fetchBalance();
+        this.balanceUpdateSubscription = this.orderNotificationService.balanceUpdate$.subscribe(() => {
+          this.fetchBalance();
         });
       } catch (e) {
         console.error('Error parsing user data', e);
@@ -67,6 +60,27 @@ export class BuySellComponent implements OnInit {
       this.alertMessage = 'User not logged in.';
       this.showAlert = true;
       this.router.navigate(['/login']);
+    }
+  }
+
+  ngOnDestroy(): void {
+    if (this.balanceUpdateSubscription) {
+      this.balanceUpdateSubscription.unsubscribe();
+    }
+  }
+
+  private fetchBalance(): void {
+    if (this.user) {
+      this.fundService.getBalance(this.user.id).subscribe({
+        next: (response) => {
+          this.fund.balance = response.balance;
+        },
+        error: (err) => {
+          console.error('Error fetching balance:', err);
+          this.alertMessage = 'Failed to load balance.';
+          this.showAlert = true;
+        }
+      });
     }
   }
 
@@ -87,7 +101,7 @@ export class BuySellComponent implements OnInit {
       return;
     }
 
-    this.isProcessing = true; 
+    this.isProcessing = true;
 
     try {
       if (this.order.tradeType === 'market') {
@@ -117,6 +131,7 @@ export class BuySellComponent implements OnInit {
       try {
         const response = await firstValueFrom(this.fundService.subtractFunds(this.user!.id, this.order.amount));
         this.fund.balance = response.newBalance;
+        this.orderNotificationService.notifyBalanceUpdate();
       } catch (fundErr) {
         console.error('Fund operation failed:', fundErr);
         this.alertMessage = 'Order placed, but failed to update balance.';
@@ -129,7 +144,7 @@ export class BuySellComponent implements OnInit {
       this.alertMessage = 'Failed to place order. Please try again.';
       this.showAlert = true;
     } finally {
-      this.isProcessing = false; 
+      this.isProcessing = false;
     }
   }
 
