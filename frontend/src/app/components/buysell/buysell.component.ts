@@ -10,11 +10,12 @@ import { FundService } from '../../services/FundService/fund.service';
 import { Fund } from '../../models/fund.model';
 import { firstValueFrom, Observable } from 'rxjs';
 import { CustomAlertComponent } from '../custom-alert/custom-alert.component';
+import { RouterModule, Router } from '@angular/router';
 
 @Component({
   selector: 'app-buysell',
   standalone: true,
-  imports: [FormsModule, CommonModule, CustomAlertComponent],
+  imports: [FormsModule, CommonModule, CustomAlertComponent, RouterModule],
   templateUrl: './buysell.component.html',
   styleUrls: ['./buysell.component.css']
 })
@@ -31,7 +32,8 @@ export class BuySellComponent implements OnInit {
   constructor(
     private orderService: OrderService,
     private priceService: PriceService,
-    private fundService: FundService
+    private fundService: FundService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -59,6 +61,7 @@ export class BuySellComponent implements OnInit {
     } else {
       this.alertMessage = 'User not logged in.';
       this.showAlert = true;
+      this.router.navigate(['/login']);
     }
   }
 
