@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 
-import { OrderNotificationService } from './order-notification.service';
+import { OrderNotificationService } from '../services/OrderNotification/order-notification.service';
 
 describe('OrderNotificationService', () => {
   let service: OrderNotificationService;

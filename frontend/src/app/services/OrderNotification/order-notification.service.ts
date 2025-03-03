@@ -8,7 +8,14 @@ export class OrderNotificationService {
   private orderPlacedSource = new Subject<void>();
   orderPlaced$ = this.orderPlacedSource.asObservable();
 
-  notifyOrderPlaced() {
+  private balanceUpdateSource = new Subject<void>();
+  balanceUpdate$ = this.balanceUpdateSource.asObservable();
+
+  notifyOrderPlaced(): void {
     this.orderPlacedSource.next();
+  }
+
+  notifyBalanceUpdate(): void {
+    this.balanceUpdateSource.next();
   }
 }
